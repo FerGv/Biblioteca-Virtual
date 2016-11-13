@@ -8,9 +8,19 @@
     <h1>Archivos</h1>
 
     {% if archivos %}
+      <h2>Imágenes</h2>
       <ul>
         {% for archivo in archivos %}
           {% if archivo.rsplit('.', 1)[1] in ['jpg', 'jpeg', 'gif'] %}
+            <li><a href="/uploads/{{ archivo }}">{{ archivo }}</a></li>
+          {% endif %}
+        {% endfor %}
+      </ul>
+
+      <h2>Documentos</h2>
+      <ul>
+        {% for archivo in archivos %}
+          {% if archivo.rsplit('.', 1)[1] in ['pdf', 'txt', 'docx'] %}
             <li><a href="/uploads/{{ archivo }}">{{ archivo }}</a></li>
           {% endif %}
         {% endfor %}

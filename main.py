@@ -96,14 +96,14 @@ def uploads(filename):
 
 @app.route('/archivos')
 def archivos():
-    mypath = '/media/fer_gv/UUI/Archivos/Python/Flask/prueba/Archivos/'
+    mypath = '/home/fer_gv/GitHub/Biblioteca-Virtual/Archivos/'
     archivos = [f for f in os.listdir(mypath) if os.path.isfile(os.path.join(mypath, f))]
 
     return render_template('archivos.html', archivos = archivos)
 
 @app.route('/borrar_archivo/<filename>')
 def borrar_archivo():
-    mypath = '/media/fer_gv/UUI/Archivos/Python/Flask/prueba/Archivos/'
+    mypath = '/home/fer_gv/GitHub/Biblioteca-Virtual/Archivos/'
     os.remove(os.path.join(mypath, filename))
 
     return redirect(url_for('archivos'))
