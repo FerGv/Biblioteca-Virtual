@@ -134,6 +134,11 @@ def comentario():
 
     return render_template('comentario.html', form = comment_form)
 
+@app.route('/comentarios')
+def comentarios():
+    comments = Comment.query.join(User).add_columns(User.username, Comment.text)
+    return render_template('comentarios.html', comments = comments)
+
 if __name__ == '__main__':
     csrf.init_app(app)
     db.init_app(app)
