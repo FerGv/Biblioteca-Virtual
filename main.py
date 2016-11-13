@@ -2,6 +2,8 @@
 # -*- coding: utf-8 -*-
 
 import os
+import forms
+
 from flask import Flask
 from flask import render_template
 from flask import request
@@ -11,11 +13,13 @@ from flask import flash
 from flask import session
 from flask import send_from_directory
 from flask_wtf import CsrfProtect
+
 from werkzeug import secure_filename
 from config import DevelopmentConfig
+
 from model import db
 from model import User
-import forms
+from model import Comment
 
 app = Flask(__name__)
 app.config.from_object(DevelopmentConfig)
@@ -24,7 +28,7 @@ csrf = CsrfProtect()
 
 @app.before_request
 def before_request():
-    if 'username' not in session and request.endpoint in ['index', 'upload', 'archivos', 'uploads', 'borrar_archivo']:
+    if 'username' not in session and request.endpoint in ['index', 'upload', 'archivos', 'uploads', 'borrar_archivo', 'comentario']:
         return redirect(url_for('login'))
     elif 'username' in session and request.endpoint in ['login', 'registro']:
         return redirect(url_for('index'))
@@ -35,7 +39,7 @@ def index():
 
 @app.route('/registro', methods = ['GET', 'POST'])
 def registro():
-    create_form = forms.Login_Form(request.form)
+    create_form = forms.Create_Form(request.form)
 
     if request.method == 'POST' and create_form.validate():
         username = create_form.user.data
@@ -47,9 +51,8 @@ def registro():
         db.session.commit()
 
         session['username'] = username
+        session['user_id'] = user.id
         return redirect(url_for('index'))
-    else:
-        print "Error"
 
     return render_template('create.html', form = create_form)
 
@@ -64,12 +67,21 @@ def login():
         user = User.query.filter_by(username = username).first()
 
         if user is not None and user.verify_password(password):
+            session['user_id'] = user.id
             session['username'] = username
             return redirect(url_for('index'))
         else:
             flash('error_message')
 
     return render_template('login.html', form = login_form)
+
+@app.route('/logout')
+def logout():
+    if 'username' in session:
+        session.pop('username')
+        session.pop('user_id')
+
+    return redirect(url_for('login'))
 
 @app.route('/upload', methods = ['GET', 'POST'])
 def upload():
@@ -107,6 +119,20 @@ def borrar_archivo(filename):
     os.remove(os.path.join(mypath, filename))
 
     return redirect(url_for('archivos'))
+
+@app.route('/comentario', methods = ['GET', 'POST'])
+def comentario():
+    comment_form = forms.Comment_Form(request.form)
+
+    if request.method == 'POST' and comment_form.validate():
+        comentario = Comment(session['user_id'],
+                            comment_form.comment.data)
+
+        db.session.add(comentario)
+        db.session.commit()
+        flash('Comentario guardado')
+
+    return render_template('comentario.html', form = comment_form)
 
 if __name__ == '__main__':
     csrf.init_app(app)

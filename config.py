@@ -5,5 +5,5 @@ class Config(object):
 
 class DevelopmentConfig(Config):
     DEBUG = True
-    SQLALCHEMY_DATABASE_URI = 'mysql://root:root@localhost/prueba'
+    SQLALCHEMY_DATABASE_URI = 'mysql://root:root@localhost/biblioteca'
     SQLALCHEMY_TRACK_MODIFICATIONS = False

@@ -13,6 +13,7 @@ class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(50), unique=True)
     password = db.Column(db.String(66), unique=True)
+    comentarios = db.relationship('Comment')
 
     def __init__(self, username, password):
         self.username = username
@@ -23,3 +24,14 @@ class User(db.Model):
 
     def verify_password(self, password):
         return check_password_hash(self.password, password)
+
+class Comment(db.Model):
+    __tablename__ = 'comentarios'
+
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    text = db.Column(db.Text)
+
+    def __init__(self, user_id, comentario):
+        self.user_id = user_id
+        self.text = comentario

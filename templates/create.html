@@ -7,6 +7,7 @@
   <body>
     <form method="post">
       {% from "_macro.html" import render_field %}
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
       {{ render_field(form.user, placeholder = 'Ingresa tu usuario...') }} <br><br>
       {{ render_field(form.pwd, placeholder = 'Ingresa tu contraseña...') }} <br><br>
 
