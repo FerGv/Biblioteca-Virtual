@@ -24,7 +24,7 @@ csrf = CsrfProtect()
 
 @app.before_request
 def before_request():
-    if 'username' not in session and request.endpoint in ['index', 'upload', 'archivos']:
+    if 'username' not in session and request.endpoint in ['index', 'upload', 'archivos', 'uploads', 'borrar_archivo']:
         return redirect(url_for('login'))
     elif 'username' in session and request.endpoint in ['login', 'registro']:
         return redirect(url_for('index'))
@@ -102,7 +102,7 @@ def archivos():
     return render_template('archivos.html', archivos = archivos)
 
 @app.route('/borrar_archivo/<filename>')
-def borrar_archivo():
+def borrar_archivo(filename):
     mypath = '/home/fer_gv/GitHub/Biblioteca-Virtual/Archivos/'
     os.remove(os.path.join(mypath, filename))
 
