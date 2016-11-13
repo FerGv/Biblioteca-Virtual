@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Registro</title>
+  </head>
+  <body>
+    <form method="post">
+      {% from "_macro.html" import render_field %}
+      {{ render_field(form.user, placeholder = 'Ingresa tu usuario...') }} <br><br>
+      {{ render_field(form.pwd, placeholder = 'Ingresa tu contraseña...') }} <br><br>
+
+      <input type="submit" name="Crear" value="Crear">
+    </form>
+  </body>
+</html>

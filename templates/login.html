@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Login</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        text-align: center;
+      }
+
+      ul {color: #c62727}
+
+      .alert {
+        margin-top: 30px;
+        color: #c62727;
+      }
+    </style>
+  </head>
+  <body>
+
+    <form method="post">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+      {% from "_macro.html" import render_field %}
+      {{ render_field(form.user, placeholder = 'Ingresa tu usuario...') }} <br><br>
+      {{ render_field(form.pwd, placeholder = 'Ingresa tu contraseña...') }} <br><br>
+
+      <input type="submit" name="Entrar" value="Entrar">
+
+      {% with messages = get_flashed_messages() %}
+        {% if messages %}
+          {% for message in messages %}
+          <div class="alert">
+            <p>Usuario o contraseña no válidos.</p>
+          </div>
+          {% endfor %}
+        {% endif %}
+      {% endwith %}
+    </form>
+  </body>
+</html>

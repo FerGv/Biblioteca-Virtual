@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Archivos</title>
+  </head>
+  <body>
+    <h1>Archivos</h1>
+
+    {% if archivos %}
+      <ul>
+        {% for archivo in archivos %}
+          {% if archivo.rsplit('.', 1)[1] in ['jpg', 'jpeg', 'gif'] %}
+            <li><a href="/uploads/{{ archivo }}">{{ archivo }}</a></li>
+          {% endif %}
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p>No hay archivos</p>
+    {% endif %}
+  </body>
+</html>

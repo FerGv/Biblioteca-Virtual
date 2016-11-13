@@ -1,0 +1,21 @@
+<html>
+   <body>
+
+      <form action = "" method = "POST" enctype = "multipart/form-data">
+         <input type = "file" name = "file" />
+         <input type = "submit" value="Subir archivo"/>
+         <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      </form>
+
+      {% with messages = get_flashed_messages() %}
+        {% if messages %}
+          {% for message in messages %}
+            <div class="alert">
+              {{ message }}
+            </div>
+          {% endfor %}
+        {% endif %}
+      {% endwith %}
+
+   </body>
+</html>
