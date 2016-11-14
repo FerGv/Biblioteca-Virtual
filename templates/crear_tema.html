@@ -8,7 +8,7 @@
     <form action="" method="post">
       <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
       {% from "_macro.html" import render_field %}
-      {{ render_field(form.theme, placeholder = 'Ingresa el tema...') }} <br><br>
+      {{ render_field(form.theme, rows = 8, cols = 60, placeholder = 'Ingresa el tema...') }} <br><br>
       <input type="submit" name="Enviar" value="Enviar Tema">
       {% with messages = get_flashed_messages() %}
         {% if messages %}

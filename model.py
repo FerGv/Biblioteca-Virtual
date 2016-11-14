@@ -1,6 +1,6 @@
  #!/usr/bin/python
  # -*- coding: utf-8 -*-
-
+import datetime
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash
 from werkzeug.security import check_password_hash
@@ -32,6 +32,7 @@ class Comment(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     theme_id = db.Column(db.Integer)
     text = db.Column(db.Text)
+    created_date = db.Column(db.DateTime, default = datetime.datetime.now)
 
     def __init__(self, user_id, comentario, theme_id):
         self.user_id = user_id
@@ -42,7 +43,7 @@ class Theme(db.Model):
     __tablename__ = 'themes'
 
     id = db.Column(db.Integer, primary_key=True)
-    tema = db.Column(db.String(100))
+    tema = db.Column(db.Text)
 
     def __init__(self, tema):
         self.tema = tema

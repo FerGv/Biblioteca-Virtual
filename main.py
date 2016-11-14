@@ -22,6 +22,8 @@ from model import User
 from model import Comment
 from model import Theme
 
+from helper import date_format
+
 app = Flask(__name__)
 app.config.from_object(DevelopmentConfig)
 app.config['UPLOAD_FOLDER'] = 'Archivos/'
@@ -29,14 +31,18 @@ csrf = CsrfProtect()
 
 @app.before_request
 def before_request():
-    if 'username' not in session and request.endpoint in ['index', 'upload', 'archivos', 'uploads', 'borrar_archivo', 'comentario']:
+    if 'username' not in session and request.endpoint in ['upload', 'archivos', 'uploads', 'borrar_archivo', 'comentarios', 'bienvenida', 'temas', 'crear_tema', 'logout']:
         return redirect(url_for('login'))
     elif 'username' in session and request.endpoint in ['login', 'registro']:
-        return redirect(url_for('index'))
+        return redirect(url_for('bienvenida'))
 
-@app.route('/', methods = ['GET', 'POST'])
+@app.route('/')
 def index():
     return render_template('index.html')
+
+@app.route('/bienvenida')
+def bienvenida():
+    return render_template('bienvenida.html')
 
 @app.route('/registro', methods = ['GET', 'POST'])
 def registro():
@@ -123,7 +129,8 @@ def borrar_archivo(filename):
 
 @app.route('/comentarios/<int:id_tema>', methods = ['GET', 'POST'])
 def comentarios(id_tema = 1):
-    comments = Comment.query.join(User).add_columns(User.username, Comment.text, Comment.theme_id)
+    tema = Theme.query.filter_by(id = id_tema).first()
+    comments = Comment.query.join(User).add_columns(User.username, Comment.text, Comment.theme_id, Comment.created_date)
 
     comment_form = forms.Comment_Form(request.form)
 
@@ -132,9 +139,9 @@ def comentarios(id_tema = 1):
         db.session.add(comentario)
         db.session.commit()
         comment_form.comment.data = ""
-        return render_template('comentarios.html', comments = comments, form = comment_form, id_tema = id_tema)
+        return render_template('comentarios.html', comments = comments, form = comment_form, id_tema = id_tema, date_format = date_format, tema = tema.tema)
 
-    return render_template('comentarios.html', comments = comments, form = comment_form, id_tema = id_tema)
+    return render_template('comentarios.html', comments = comments, form = comment_form, id_tema = id_tema, date_format = date_format, tema = tema.tema)
 
 @app.route('/temas')
 def temas():

@@ -28,4 +28,4 @@ class Comment_Form(Form):
     comment = TextAreaField('Comentario', [validators.Required(message='Este campo es obligatorio')])
 
 class Theme_Form(Form):
-    theme = StringField('Tema', [validators.Required(message='Este campo es obligatorio')])
+    theme = TextAreaField('Tema', [validators.Required(message='Este campo es obligatorio')])

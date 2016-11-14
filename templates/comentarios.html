@@ -6,10 +6,12 @@
   </head>
   <body>
     {% if comments %}
+      <h1>{{ tema }}</h1><br>
       {% for comment in comments %}
         {% if comment.theme_id == id_tema %}
-          <p>Usuario: {{ comment.username }}</p>
-          <p>Comentario: {{ comment.text }}</p>
+          <h2>{{ comment.username }}</h2>
+          <h5>{{ date_format(comment.created_date) }}</h5>
+          <p>{{ comment.text }}</p>
           <br>
         {% endif %}
       {% endfor %}
@@ -17,6 +19,7 @@
       <p>No hay comentarios.</p>
     {% endif %}
 
+    <br><br><br>
     <form action="" method="post">
       <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
       {% from "_macro.html" import render_field %}
