@@ -121,21 +121,20 @@ def borrar_archivo(filename):
 
     return redirect(url_for('archivos'))
 
-@app.route('/comentarios/<id_tema>', methods = ['GET', 'POST'])
+@app.route('/comentarios/<int:id_tema>', methods = ['GET', 'POST'])
 def comentarios(id_tema = 1):
-    comments = Comment.query.join(User).add_columns(User.username, Comment.text, Comment.theme_id).filter_by(theme_id = id_tema)
+    comments = Comment.query.join(User).add_columns(User.username, Comment.text, Comment.theme_id)
 
     comment_form = forms.Comment_Form(request.form)
 
     if request.method == 'POST' and comment_form.validate():
         comentario = Comment(session['user_id'], comment_form.comment.data, id_tema)
-
         db.session.add(comentario)
         db.session.commit()
+        comment_form.comment.data = ""
+        return render_template('comentarios.html', comments = comments, form = comment_form, id_tema = id_tema)
 
-        return render_template('comentarios.html', comments = comments, form = comment_form)
-
-    return render_template('comentarios.html', comments = comments, form = comment_form)
+    return render_template('comentarios.html', comments = comments, form = comment_form, id_tema = id_tema)
 
 @app.route('/temas')
 def temas():

@@ -7,9 +7,11 @@
   <body>
     {% if comments %}
       {% for comment in comments %}
-        <p>Usuario: {{ comment.username }}</p>
-        <p>Comentario: {{ comment.text }}</p>
-        <br>
+        {% if comment.theme_id == id_tema %}
+          <p>Usuario: {{ comment.username }}</p>
+          <p>Comentario: {{ comment.text }}</p>
+          <br>
+        {% endif %}
       {% endfor %}
     {% else %}
       <p>No hay comentarios.</p>

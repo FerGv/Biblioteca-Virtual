@@ -6,6 +6,7 @@
   </head>
   <body>
     {% if temas %}
+      <h1>Temas</h1>
       <ul>
         {% for tema in temas %}
           <li><a href="/comentarios/{{ tema.id }}">{{ tema.tema }}</a></li>
