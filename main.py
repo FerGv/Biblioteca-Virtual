@@ -42,7 +42,8 @@ def index():
 
 @app.route('/bienvenida')
 def bienvenida():
-    return render_template('bienvenida.html')
+    title = 'Index'
+    return render_template('bienvenida.html', title = title)
 
 @app.route('/registro', methods = ['GET', 'POST'])
 def registro():
