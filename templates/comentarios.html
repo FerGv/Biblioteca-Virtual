@@ -14,5 +14,12 @@
     {% else %}
       <p>No hay comentarios.</p>
     {% endif %}
+
+    <form action="" method="post">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      {% from "_macro.html" import render_field %}
+      {{ render_field(form.comment, rows = '5', cols = '60', placeholder = 'Ingresa tu comentario...') }} <br><br>
+      <input type="submit" name="Enviar" value="Enviar Comentario">
+    </form>
   </body>
 </html>

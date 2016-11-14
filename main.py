@@ -20,6 +20,7 @@ from config import DevelopmentConfig
 from model import db
 from model import User
 from model import Comment
+from model import Theme
 
 app = Flask(__name__)
 app.config.from_object(DevelopmentConfig)
@@ -120,24 +121,43 @@ def borrar_archivo(filename):
 
     return redirect(url_for('archivos'))
 
-@app.route('/comentario', methods = ['GET', 'POST'])
-def comentario():
+@app.route('/comentarios/<id_tema>', methods = ['GET', 'POST'])
+def comentarios(id_tema = 1):
+    comments = Comment.query.join(User).add_columns(User.username, Comment.text, Comment.theme_id).filter_by(theme_id = id_tema)
+
     comment_form = forms.Comment_Form(request.form)
 
     if request.method == 'POST' and comment_form.validate():
-        comentario = Comment(session['user_id'],
-                            comment_form.comment.data)
+        comentario = Comment(session['user_id'], comment_form.comment.data, id_tema)
 
         db.session.add(comentario)
         db.session.commit()
-        flash('Comentario guardado')
 
-    return render_template('comentario.html', form = comment_form)
+        return render_template('comentarios.html', comments = comments, form = comment_form)
 
-@app.route('/comentarios')
-def comentarios():
-    comments = Comment.query.join(User).add_columns(User.username, Comment.text)
-    return render_template('comentarios.html', comments = comments)
+    return render_template('comentarios.html', comments = comments, form = comment_form)
+
+@app.route('/temas')
+def temas():
+    temas = Theme.query.all()
+    return render_template('temas.html', temas = temas)
+
+@app.route('/crear_tema', methods = ['GET', 'POST'])
+def crear_tema():
+    theme_form = forms.Theme_Form(request.form)
+
+    if request.method == 'POST' and theme_form.validate():
+        tema = theme_form.theme.data
+
+        theme = Theme(tema)
+
+        db.session.add(theme)
+        db.session.commit()
+
+        flash('Tema creado')
+        return redirect(url_for('temas'))
+
+    return render_template('crear_tema.html', form = theme_form)
 
 if __name__ == '__main__':
     csrf.init_app(app)

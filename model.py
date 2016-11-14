@@ -26,12 +26,23 @@ class User(db.Model):
         return check_password_hash(self.password, password)
 
 class Comment(db.Model):
-    __tablename__ = 'comentarios'
+    __tablename__ = 'comments'
 
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    theme_id = db.Column(db.Integer)
     text = db.Column(db.Text)
 
-    def __init__(self, user_id, comentario):
+    def __init__(self, user_id, comentario, theme_id):
         self.user_id = user_id
         self.text = comentario
+        self.theme_id = theme_id
+
+class Theme(db.Model):
+    __tablename__ = 'themes'
+
+    id = db.Column(db.Integer, primary_key=True)
+    tema = db.Column(db.String(100))
+
+    def __init__(self, tema):
+        self.tema = tema
