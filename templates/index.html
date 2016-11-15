@@ -1,10 +1,20 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8">
-    <title>Index</title>
-  </head>
-  <body>
-    <h1>Bienvenido</h1>
-  </body>
-</html>
+{% extends 'base2.html' %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block contenido %}
+<section class="center">
+  <h1 class="titulo">Biblioteca Virtual</h1>
+
+  <br><br>
+
+  <section class="text">
+    <a class="enlace_text" href="/login">Login</a>
+    <a class="enlace_text" href="/registro">Registro</a>
+  </section>
+  <section class="options">
+    <a class="enlace" href="/login"><i class="material-icons icon">vpn_key</i></a>
+    <a class="enlace" href="/registro"><i class="material-icons icon">assignment</i></a>
+  </section>
+</section>
+{% endblock %}

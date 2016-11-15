@@ -1,33 +1,23 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8">
-    <title>Login</title>
-    <style>
-      * {
-        margin: 0;
-        padding: 0;
-        text-align: center;
-      }
+{% extends 'base2.html' %}
 
-      ul {color: #c62727}
+{% block title %}{{ title }}{% endblock %}
 
-      .alert {
-        margin-top: 30px;
-        color: #c62727;
-      }
-    </style>
-  </head>
-  <body>
+{% block css %}ul {color: #c62727}{% endblock %}
 
-    <form method="post">
+{% block contenido %}
+  <section class="center">
+    <h1 class="titulo">Iniciar Sesión</h1>
+
+    <br><br>
+
+    <form method="post" class="mdl-layout__content">
       <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
 
       {% from "_macro.html" import render_field %}
       {{ render_field(form.user, placeholder = 'Ingresa tu usuario...') }} <br><br>
       {{ render_field(form.pwd, placeholder = 'Ingresa tu contraseña...') }} <br><br>
 
-      <input type="submit" name="Entrar" value="Entrar">
+      <input type="submit" name="Entrar" value="Entrar" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
 
       {% with messages = get_flashed_messages() %}
         {% if messages %}
@@ -39,5 +29,5 @@
         {% endif %}
       {% endwith %}
     </form>
-  </body>
-</html>
+  </section>
+{% endblock %}

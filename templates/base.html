@@ -6,13 +6,45 @@
     <title>{% block title %}{% endblock %}</title>
     <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:300,400,500,700" type="text/css" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
-    <link rel="stylesheet" href="https://code.getmdl.io/1.2.1/material.green-yellow.min.css" />
-    {% block css %}{% endblock %}
+    <link rel="stylesheet" href="{{ url_for('static', filename = 'css/material.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static', filename = 'css/estilos.css') }}" />
+    <style>
+    .demo-layout-transparent {
+      background: url('{{ url_for('static', filename = 'img/biblioteca.jpg') }}') center / cover;
+    }
+    </style>
   </head>
   <body>
-    {% block contenido %}
-    {% endblock %}
+    <div class="demo-layout-transparent mdl-layout mdl-js-layout">
+      <header class="demo-layout__header mdl-layout__header mdl-layout__header--transparent">
+        <div class="mdl-layout__header-row demo-mdl-layout__header-row">
+          <!-- Title -->
+          <span class="mdl-layout-title header_text">Menú</span>
+          <!-- Add spacer, to align navigation to the right -->
+          <div class="mdl-layout-spacer"></div>
+          <!-- Navigation -->
+          <nav class="mdl-navigation">
+            <a class="mdl-navigation__link header_text header_link" href="/archivos"><i class="material-icons header_text">library_books</i> Biblioteca</a>
+            <a class="mdl-navigation__link header_text header_link" href="/temas"><i class="material-icons header_text">forum</i> Foro</a>
+            <a class="mdl-navigation__link header_text header_link" href="/logout"><i class="material-icons header_text">power_settings_new</i> Salir</a>
+          </nav>
+        </div>
+      </header>
+      <div class="mdl-layout__drawer">
+        <span class="mdl-layout-title">Asignaturas</span>
+        <nav class="mdl-navigation">
+          <a class="mdl-navigation__link drawer_link" href="">Álgebra Lineal</a>
+          <a class="mdl-navigation__link drawer_link" href="">Programación</a>
+          <a class="mdl-navigation__link drawer_link" href="">Probabilidad</a>
+        </nav>
+      </div>
 
-    <script defer src="https://code.getmdl.io/1.2.1/material.min.js"></script>
+      <main class="mdl-layout__content">
+        {% block contenido %}
+        {% endblock %}
+      </main>
+    </div>
+
+    <script src="{{ url_for('static', filename = 'js/material.js') }}"></script>
   </body>
 </html>
