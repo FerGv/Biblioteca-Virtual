@@ -1,19 +1,39 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8">
-    <title>Temas</title>
-  </head>
-  <body>
-    {% if temas %}
-      <h1>Temas</h1>
-      <ul>
-        {% for tema in temas %}
-          <li><a href="/comentarios/{{ tema.id }}">{{ tema.tema }}</a></li>
-        {% endfor %}
-      </ul>
-    {% else %}
-      <p>No hay temas.</p>
-    {% endif %}
-  </body>
-</html>
+{% extends 'base.html' %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block css %}
+.titulo {
+  text-align: center;
+  background: none;
+  color: #fff;
+}
+{% endblock %}
+
+{% block contenido %}
+  <h1 class="titulo">Temas</h1>
+
+  {% if temas %}
+    <ul class="mdl-list">
+      {% for tema in temas %}
+        <li class="mdl-list__item archivo">
+          <span class="mdl-list__item-primary-content">
+            <i class="material-icons mdl-list__item-icon">mode_comment</i>
+            <a href="/comentarios/{{ tema.id }}">{{ tema.tema }}</a>
+          </span>
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <ul class="mdl-list">
+      {% for tema in temas %}
+        <li class="mdl-list__item archivo">
+          <span class="mdl-list__item-primary-content">
+            <i class="material-icons mdl-list__item-icon">mode_comment</i>
+            <a href="#">Lo sentimos, por el momento no hay temas.</a>
+          </span>
+        </li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+{% endblock %}

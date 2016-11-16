@@ -88,7 +88,7 @@
       </div>
       <div class="mdl-tabs__panel" id="txt">
         {% if archivos %}
-          <ul class="demo-list-icon mdl-list">
+          <ul class="demo-list-icon mdl-list default">
             {% for archivo in archivos %}
               {% if archivo.rsplit('.', 1)[1] == 'txt' %}
               <li class="mdl-list__item archivo">
@@ -101,7 +101,16 @@
             {% endfor %}
           </ul>
         {% else %}
-          <p class="archivo">No hay archivos</p>
+          <ul class="mdl-list">
+            {% for tema in temas %}
+              <li class="mdl-list__item archivo">
+                <span class="mdl-list__item-primary-content">
+                  <i class="material-icons mdl-list__item-icon">mode_comment</i>
+                  <a href="#">Lo sentimos, por el momento no hay archivos.</a>
+                </span>
+              </li>
+            {% endfor %}
+          </ul>
         {% endif %}
       </div>
       <div class="mdl-tabs__panel" id="otros">
