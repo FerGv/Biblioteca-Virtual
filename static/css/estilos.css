@@ -28,18 +28,20 @@
 }
 .titulo {
   background-color: rgba(255, 255, 255, 0.5);
+  color: #0d47a1;
   font-size: 6em;
 }
 .enlace {
   display: inline-block;
   padding: 50px;
-  margin: 10px 30px;
+  margin: 10px 50px 0 60px;
   background: #fff;
   border-radius: 50%;
   transition: all .5s;
+  color: #0d47a1;
 }
 .enlace:hover {
-  background-color: rgba(0, 0, 0, 0.6);
+  background-color: rgba(0, 0, 0, 0.8);
   cursor: pointer;
 }
 .enlace .icon {
@@ -54,9 +56,10 @@
   font-size: 3em;
   border-radius: 10px;
   transition: all .5s;
+  color: #0d47a1;
 }
 .text .enlace_text:hover {
-  background-color: rgba(0, 0, 0, 0.6);
+  background-color: rgba(0, 0, 0, 0.8);
 }
 
 /* ----- ARCHIVOS ----- */
@@ -78,4 +81,15 @@
 .alert {
   margin-top: 30px;
   color: #c62727;
+}
+.alert p {
+  font-size: 1.5em;
+}
+.oculto {
+  display: none;
+}
+.form {
+  padding: 50px;
+  background-color: rgba(255, 255, 255, 0.5);
+  border-radius: 10px;
 }

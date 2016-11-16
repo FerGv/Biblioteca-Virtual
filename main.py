@@ -64,7 +64,7 @@ def registro():
         return redirect(url_for('bienvenida'))
 
     title = 'Registro'
-    return render_template('create.html', form = create_form, title = title)
+    return render_template('registro.html', form = create_form, title = title)
 
 @app.route('/login', methods = ['GET', 'POST'])
 def login():

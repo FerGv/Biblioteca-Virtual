@@ -3879,8 +3879,8 @@ ul, ol {
     .mdl-button.mdl-button--colored:focus:not(:active) {
       background-color: rgba(0,0,0, 0.12); }
 
-input.mdl-button[type="submit"] {
-  -webkit-appearance: none; }
+/*input.mdl-button[type="submit"] {
+  -webkit-appearance: none; }*/
 
 .mdl-button--raised {
   background: rgba(158,158,158, 0.20);
@@ -3895,7 +3895,7 @@ input.mdl-button[type="submit"] {
     background: rgb(63,81,181);
     color: rgb(255,255,255); }
     .mdl-button--raised.mdl-button--colored:hover {
-      background-color: rgb(63,81,181); }
+      background-color: #1565c0; }
     .mdl-button--raised.mdl-button--colored:active {
       background-color: rgb(63,81,181); }
     .mdl-button--raised.mdl-button--colored:focus:not(:active) {
@@ -10132,7 +10132,7 @@ _:-ms-input-placeholder, :root .mdl-slider.mdl-slider.is-upgraded {
 
 .mdl-textfield__input {
   border: none;
-  border-bottom: 1px solid rgba(0,0,0, 0.12);
+  border-bottom: 2px solid #0d47a1;
   display: block;
   font-size: 16px;
   font-family: "Helvetica", "Arial", sans-serif;
@@ -10163,7 +10163,7 @@ _:-ms-input-placeholder, :root .mdl-slider.mdl-slider.is-upgraded {
 
 .mdl-textfield__label {
   bottom: 0;
-  color: rgba(0,0,0, 0.26);
+  color: #0d47a1;
   font-size: 16px;
   left: 0;
   right: 0;
@@ -10189,7 +10189,7 @@ _:-ms-input-placeholder, :root .mdl-slider.mdl-slider.is-upgraded {
   .mdl-textfield--floating-label.is-focused .mdl-textfield__label,
   .mdl-textfield--floating-label.is-dirty .mdl-textfield__label,
   .mdl-textfield--floating-label.has-placeholder .mdl-textfield__label {
-    color: rgb(63,81,181);
+    color: #1565c0;
     font-size: 12px;
     top: 4px;
     visibility: visible; }
@@ -10201,7 +10201,7 @@ _:-ms-input-placeholder, :root .mdl-slider.mdl-slider.is-upgraded {
     color: rgb(213,0,0);
     font-size: 12px; }
   .mdl-textfield__label:after {
-    background-color: rgb(63,81,181);
+    background-color: #1565c0;
     bottom: 20px;
     content: '';
     height: 2px;

@@ -10,11 +10,11 @@ from wtforms import validators
 from model import User
 
 class Login_Form(Form):
-    user = StringField('Usuario', [validators.Required(message='Este campo es obligatorio.'), validators.length(min=4, max=25, message='Ingrese un usuario valido.')])
+    user = StringField('Usuario', [validators.Required(message='Este campo es obligatorio.'), validators.length(min=4, max=25, message='4 - 25 caracteres.')])
     pwd = PasswordField('Password', [validators.Required(message='Este campo es obligatorio')])
 
 class Create_Form(Form):
-    user = StringField('Usuario', [validators.Required(message='Este campo es obligatorio.'), validators.length(min=4, max=25, message='Ingrese un usuario valido.')])
+    user = StringField('Usuario', [validators.Required(message='Este campo es obligatorio.'), validators.length(min=4, max=25, message='4 - 25 caracteres.')])
     pwd = PasswordField('Password', [validators.Required(message='Este campo es obligatorio')])
 
     def validate_user(form, field):
