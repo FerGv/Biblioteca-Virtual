@@ -2,11 +2,16 @@
 
 {% block title %}{{ title }}{% endblock %}
 
-{% block contenido %}
-<h1>Bienvenido</h1>
+{% block css %}body {text-align:center;}{% endblock %}
 
-<section class="options">
-  <a><i class="material-icons">vpn_key</i></a>
-  <a><i class="material-icons">library_books</i></a>
+{% block contenido %}
+<h1 class="titulo">Bienvenido</h1>
+
+<section class="mensaje">
+  <p>
+    Bienvenido, en esta plataforma encontrarás material académico como libros, exámenes y mucho más que esperamos te sirvan de ayuda para que logres tener un buen rendimiento escolar.
+  </p>
+  <br>
+  <img src="{{ url_for('static', filename = 'img/logo.png') }}" alt="Logo">
 </section>
 {% endblock %}
