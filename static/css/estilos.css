@@ -75,6 +75,11 @@
 .archivo a {
   text-decoration: none;
 }
+.nuevo {
+  position: absolute;
+  right: 60px;
+  bottom: 60px;
+}
 
 
 /* ----- LOGIN ----- */
@@ -108,4 +113,21 @@
 }
 .mensaje img {
   border-radius: 50%;
+}
+
+
+/* ----- COMENTARIOS ----- */
+.blanco {
+  color: #fff;
+}
+.form_comment {
+  width: 70%;
+  margin: auto;
+  padding: 10px;
+  background-color: rgba(255, 255, 255, 0.5);
+  border-radius: 10px;
+  text-align: center;
+}
+.ancho {
+  width: 80%;
 }

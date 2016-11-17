@@ -29,7 +29,7 @@
 
       <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
         {{form.pwd(class_='mdl-textfield__input')|safe}}
-        {{form.pwd.label(class_='mdl-textfield__label')}}
+        <label class="mdl-textfield__label" for="pwd">Contraseña</label>
       </div>
       {% if form.pwd.errors %}
       <ul>

@@ -440,7 +440,7 @@ fieldset {
  * Allow only vertical resizing of textareas.
  */
 textarea {
-  resize: vertical; }
+  resize: none; }
 
 /* ==========================================================================
    Browser Upgrade Prompt
@@ -10159,7 +10159,9 @@ _:-ms-input-placeholder, :root .mdl-slider.mdl-slider.is-upgraded {
     color: rgba(0,0,0, 0.26); }
 
 .mdl-textfield textarea.mdl-textfield__input {
-  display: block; }
+  display: block;
+  background-color: rgba(13, 71, 161, 0.5);
+ }
 
 .mdl-textfield__label {
   bottom: 0;
