@@ -131,3 +131,10 @@
 .ancho {
   width: 80%;
 }
+
+
+/* ----- COMENTARIOS ----- */
+.boton_file:hover {
+  color: #fff;
+  background: #0d47a1;
+}

@@ -1,21 +1,117 @@
-<html>
-   <body>
+{% extends 'base3.html' %}
 
-      <form action = "" method = "POST" enctype = "multipart/form-data">
-         <input type = "file" name = "file" />
-         <input type = "submit" value="Subir archivo"/>
-         <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-      </form>
+{% block title %}{{ title }}{% endblock %}
+
+{% block css %}
+.fileUpload {
+    position: relative;
+    overflow: hidden;
+    margin: 10px;
+}
+.fileUpload input.upload {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 0;
+    padding: 0;
+    font-size: 20px;
+    cursor: pointer;
+    opacity: 0;
+    filter: alpha(opacity=0);
+}
+.btn {
+  display: inline-block;
+  padding: 6px 12px;
+  margin-bottom: 0;
+  font-size: 14px;
+  font-weight: normal;
+  line-height: 1.42857143;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: middle;
+  -ms-touch-action: manipulation;
+      touch-action: manipulation;
+  cursor: pointer;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+  background-image: none;
+  border: 1px solid transparent;
+  border-radius: 4px;
+}
+.btn:hover,
+.btn:focus,
+.btn.focus {
+  color: #333;
+  text-decoration: none;
+}
+.btn-primary {
+  color: #fff;
+  background-color: #337ab7;
+  border-color: #2e6da4;
+}
+.btn-primary:focus,
+.btn-primary.focus {
+  color: #fff;
+  background-color: #286090;
+  border-color: #122b40;
+}
+.btn-primary:hover {
+  color: #fff;
+  background-color: #286090;
+  border-color: #204d74;
+}
+.form {
+  padding: 30px;
+}
+{% endblock %}
+
+{% block contenido %}
+  <section class="center">
+    <h1 class="titulo">Subir archivo</h1>
+
+    <br>
+
+    <form method="post" class="mdl-layout__content form" onload="Subir_Archivo()">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+      <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+        <input type="text" id="title" class="mdl-textfield__input" required>
+        <label class="mdl-textfield__label" for="title">Título</label>
+      </div>
+
+      <br>
+
+      <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+        <input type="text" id="desc" class="mdl-textfield__input" required>
+        <label class="mdl-textfield__label" for="desc">Descripción</label>
+      </div>
+
+      <br><br>
+
+      <input id="uploadFile" placeholder="Choose File" disabled="disabled" />
+      <div class="fileUpload btn btn-primary">
+          <span>Upload</span>
+          <input id="uploadBtn" type="file" class="upload" required/>
+      </div>
+      <script>
+      document.getElementById("uploadBtn").onchange = function () {document.getElementById("uploadFile").value = this.value;}
+      </script>
+
+      <br><br><br>
+
+      <input type="submit" name="Entrar" value="Subir Archivo" class="mdl-button mdl-button--raised mdl-button--colored">
 
       {% with messages = get_flashed_messages() %}
         {% if messages %}
           {% for message in messages %}
-            <div class="alert">
-              {{ message }}
-            </div>
+          <div class="alert">
+            <p>Usuario o contraseña no válidos.</p>
+          </div>
           {% endfor %}
         {% endif %}
       {% endwith %}
-
-   </body>
-</html>
+    </form>
+  </section>
+{% endblock %}
