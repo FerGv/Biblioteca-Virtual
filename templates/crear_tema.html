@@ -1,24 +1,36 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8">
-    <title>Comentario</title>
-  </head>
-  <body>
-    <form action="" method="post">
-      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-      {% from "_macro.html" import render_field %}
-      {{ render_field(form.theme, rows = 8, cols = 60, placeholder = 'Ingresa el tema...') }} <br><br>
-      <input type="submit" name="Enviar" value="Enviar Tema">
-      {% with messages = get_flashed_messages() %}
-        {% if messages %}
-          {% for message in messages %}
-          <div class="alert">
-            {{ message }}
-          </div>
-          {% endfor %}
-        {% endif %}
-      {% endwith %}
-    </form>
-  </body>
-</html>
+{% extends 'base3.html' %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block css %}
+  .titulo {
+    text-align: center;
+  }
+{% endblock %}
+
+{% block contenido %}
+  <h1 class="titulo">Crear Tema</h1>
+
+  <br>
+
+  <form action="" method="post" class="form_comment">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label ancho">
+      {{form.theme(class_='mdl-textfield__input', rows = '10', cols = '100')|safe}}
+      <label class="mdl-textfield__label blanco" for="comment">Ingresa un tema...</label>
+    </div>
+    <br>
+    <input type="submit" name="Enviar" value="Enviar Comentario" class="mdl-button mdl-button--raised mdl-button--colored">
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        {% for message in messages %}
+        <div class="alert">
+          {{ message }}
+        </div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+    <br><br>
+  </form>
+  <br>
+{% endblock %}
