@@ -73,7 +73,7 @@
 
     <br>
 
-    <form method="post" class="mdl-layout__content form" onload="Subir_Archivo()">
+    <form method="post" class="mdl-layout__content form" onload="Subir_Archivo()" enctype="multipart/form-data">
       <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
 
       <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
@@ -93,7 +93,7 @@
       <input id="uploadFile" placeholder="Choose File" disabled="disabled" />
       <div class="fileUpload btn btn-primary">
           <span>Upload</span>
-          <input id="uploadBtn" type="file" class="upload" required/>
+          <input id="uploadBtn" type="file" name="file" class="upload" required/>
       </div>
       <script>
       document.getElementById("uploadBtn").onchange = function () {document.getElementById("uploadFile").value = this.value;}
@@ -107,7 +107,7 @@
         {% if messages %}
           {% for message in messages %}
           <div class="alert">
-            <p>Usuario o contraseña no válidos.</p>
+            {{ message }}
           </div>
           {% endfor %}
         {% endif %}
