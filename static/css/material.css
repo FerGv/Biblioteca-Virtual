@@ -6539,13 +6539,14 @@ ul, ol {
   .mdl-list__item--three-line .mdl-list__item-secondary-content {
     height: 52px; }
   .mdl-list__item--three-line .mdl-list__item-text-body {
+    margin-top: 10px;
     font-size: 14px;
     font-weight: 400;
     line-height: 24px;
     letter-spacing: 0;
     line-height: 18px;
     height: 52px;
-    color: rgba(0,0,0, 0.54);
+    color: #fff;
     display: block;
     padding: 0; }
 
@@ -7726,7 +7727,7 @@ ul, ol {
   -webkit-flex-grow: 1;
       -ms-flex-positive: 1;
           flex-grow: 1;
-  z-index: 1;
+  z-index: 3;
   -webkit-overflow-scrolling: touch; }
   .mdl-layout--fixed-drawer > .mdl-layout__content {
     margin-left: 240px; }

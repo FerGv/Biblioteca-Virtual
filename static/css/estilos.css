@@ -76,9 +76,19 @@
   text-decoration: none;
 }
 .nuevo {
-  position: absolute;
-  right: 60px;
-  bottom: 60px;
+  position: fixed;
+  top: 10px;
+  left: 400px;
+  z-index: 100;
+}
+.nuevo_link {
+  position: fixed;
+  top: 30px;
+  left: 465px;
+  text-decoration: none;
+  font-size: 1.5em;
+  font-weight: bold;
+  z-index: 100;
 }
 
 

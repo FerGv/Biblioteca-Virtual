@@ -14,6 +14,7 @@ class User(db.Model):
     username = db.Column(db.String(50), unique=True)
     password = db.Column(db.String(66), unique=True)
     comentarios = db.relationship('Comment')
+    archivos = db.relationship('File')
 
     def __init__(self, username, password):
         self.username = username
@@ -44,6 +45,37 @@ class Theme(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     tema = db.Column(db.Text)
+    materia_id = db.Column(db.Integer)
 
     def __init__(self, tema):
         self.tema = tema
+
+class Materia(db.Model):
+    __tablename__ = 'materias'
+
+    id = db.Column(db.Integer, primary_key=True)
+    nombre = db.Column(db.String(60), unique=True)
+
+    def __init__(self, nombre):
+        self.nombre = nombre
+
+class File(db.Model):
+    __tablename__ = 'files'
+
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    materia_id = db.Column(db.Integer)
+    titulo = db.Column(db.String(60))
+    descripcion = db.Column(db.Text)
+    archivo = db.Column(db.Text)
+    likes = db.Column(db.Integer)
+    dislikes = db.Column(db.Integer)
+
+    def __init__(self, user_id, materia_id, titulo, descripcion, archivo, likes, dislikes):
+        self.user_id = user_id
+        self.materia_id = materia_id
+        self.titulo = titulo
+        self.descripcion = descripcion
+        self.archivo = archivo
+        self.likes = likes
+        self.dislikes = dislikes

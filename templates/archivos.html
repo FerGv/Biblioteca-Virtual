@@ -4,6 +4,7 @@
 
 {% block contenido %}
   <a href="/upload"><button class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored nuevo" title="Nuevo"><i class="material-icons">add</i></button></a>
+  <a href="/upload" class="nuevo_link">Nuevo</a>
 
   <br><br>
 
@@ -18,121 +19,177 @@
       </div>
 
       <div class="mdl-tabs__panel is-active" id="img">
+        <ul class="mdl-list">
           {% if archivos %}
-            <ul class="demo-list-icon mdl-list">
-              {% for archivo in archivos %}
-                {% if archivo.rsplit('.', 1)[1] in ['jpg', 'jpeg', 'gif'] %}
-                  <li class="mdl-list__item archivo">
+              {% for file in archivos %}
+                {% if file.archivo.rsplit('.', 1)[1] in ['jpg', 'jpeg', 'gif', 'png'] %}
+                  <li class="mdl-list__item mdl-list__item--three-line archivo">
                     <span class="mdl-list__item-primary-content">
                       <i class="material-icons mdl-list__item-icon">image</i>
-                      <a href="/uploads/{{ archivo }}">{{ archivo }}</a>
+                      <span><a href="/uploads/{{ file.archivo }}">{{ file.titulo }}</a></span>
+                      <span class="mdl-list__item-text-body">{{ file.descripcion }}</span>
+                    </span>
+                    <span class="mdl-list__item-secondary-action">
+                      <a class="mdl-list__item-secondary-action" href="#"><i class="material-icons">check_circle</i></a>
+                      <a class="mdl-list__item-secondary-action" href="#"><i class="material-icons">block</i></a>
+                      <a class="mdl-list__item-secondary-action" href="#"><i class="material-icons">star_border</i></a>
                     </span>
                   </li>
                 {% endif %}
               {% endfor %}
-            </ul>
           {% else %}
-            <p class="archivo">No hay archivos</p>
+            <li class="mdl-list__item archivo">
+              <span class="mdl-list__item-primary-content">
+                <i class="material-icons mdl-list__item-icon">error</i>
+                <a href="#">No hay archivos</a>
+            </span>
+            </li>
           {% endif %}
+        </ul>
       </div>
       <div class="mdl-tabs__panel" id="pdf">
-        {% if archivos %}
-          <ul class="demo-list-icon mdl-list">
-            {% for archivo in archivos %}
-              {% if archivo.rsplit('.', 1)[1] == 'pdf' %}
-              <li class="mdl-list__item archivo">
-                <span class="mdl-list__item-primary-content">
-                  <i class="material-icons mdl-list__item-icon">picture_as_pdf</i>
-                  <a href="/uploads/{{ archivo }}">{{ archivo }}</a>
-                </span>
-              </li>
-              {% endif %}
-            {% endfor %}
-          </ul>
-        {% else %}
-          <p class="archivo">No hay archivos</p>
-        {% endif %}
+        <ul class="mdl-list">
+          {% if archivos %}
+              {% for file in archivos %}
+                {% if file.archivo.rsplit('.', 1)[1] == 'pdf' %}
+                  <li class="mdl-list__item mdl-list__item--three-line archivo">
+                    <span class="mdl-list__item-primary-content">
+                      <i class="material-icons mdl-list__item-icon">image</i>
+                      <span><a href="/uploads/{{ file.archivo }}">{{ file.titulo }}</a></span>
+                      <span class="mdl-list__item-text-body">{{ file.descripcion }}</span>
+                    </span>
+                    <span class="mdl-list__item-secondary-action">
+                      <a class="mdl-list__item-secondary-action" href="#"><i class="material-icons">check_circle</i></a>
+                      <a class="mdl-list__item-secondary-action" href="#"><i class="material-icons">block</i></a>
+                      <a class="mdl-list__item-secondary-action" href="#"><i class="material-icons">star_border</i></a>
+                    </span>
+                  </li>
+                {% endif %}
+              {% endfor %}
+          {% else %}
+            <li class="mdl-list__item archivo">
+              <span class="mdl-list__item-primary-content">
+                <i class="material-icons mdl-list__item-icon">error</i>
+                <a href="#">No hay archivos</a>
+            </span>
+            </li>
+          {% endif %}
+        </ul>
       </div>
       <div class="mdl-tabs__panel" id="word">
-        {% if archivos %}
-          <ul class="demo-list-icon mdl-list">
-            {% for archivo in archivos %}
-              {% if archivo.rsplit('.', 1)[1] == 'docx' %}
-              <li class="mdl-list__item archivo">
-                <span class="mdl-list__item-primary-content">
-                  <i class="material-icons mdl-list__item-icon">insert_drive_file</i>
-                  <a href="/uploads/{{ archivo }}">{{ archivo }}</a>
-                </span>
-              </li>
-              {% endif %}
-            {% endfor %}
-          </ul>
-        {% else %}
-          <p class="archivo">No hay archivos</p>
-        {% endif %}
+        <ul class="mdl-list">
+          {% if archivos %}
+              {% for file in archivos %}
+                {% if file.archivo.rsplit('.', 1)[1] in ['docx', 'doc'] %}
+                  <li class="mdl-list__item mdl-list__item--three-line archivo">
+                    <span class="mdl-list__item-primary-content">
+                      <i class="material-icons mdl-list__item-icon">image</i>
+                      <span><a href="/uploads/{{ file.archivo }}">{{ file.titulo }}</a></span>
+                      <span class="mdl-list__item-text-body">{{ file.descripcion }}</span>
+                    </span>
+                    <span class="mdl-list__item-secondary-action">
+                      <a class="mdl-list__item-secondary-action" href="#"><i class="material-icons">check_circle</i></a>
+                      <a class="mdl-list__item-secondary-action" href="#"><i class="material-icons">block</i></a>
+                      <a class="mdl-list__item-secondary-action" href="#"><i class="material-icons">star_border</i></a>
+                    </span>
+                  </li>
+                {% endif %}
+              {% endfor %}
+          {% else %}
+            <li class="mdl-list__item archivo">
+              <span class="mdl-list__item-primary-content">
+                <i class="material-icons mdl-list__item-icon">error</i>
+                <a href="#">No hay archivos</a>
+            </span>
+            </li>
+          {% endif %}
+        </ul>
       </div>
       <div class="mdl-tabs__panel" id="ppt">
-        {% if archivos %}
-          <ul class="demo-list-icon mdl-list">
-            {% for archivo in archivos %}
-              {% if archivo.rsplit('.', 1)[1] == 'pptx' %}
-              <li class="mdl-list__item archivo">
-                <span class="mdl-list__item-primary-content">
-                  <i class="material-icons mdl-list__item-icon">insert_drive_file</i>
-                  <a href="/uploads/{{ archivo }}">{{ archivo }}</a>
-                </span>
-              </li>
-              {% endif %}
-            {% endfor %}
-          </ul>
-        {% else %}
-          <p class="archivo">No hay archivos</p>
-        {% endif %}
+        <ul class="mdl-list">
+          {% if archivos %}
+              {% for file in archivos %}
+                {% if file.archivo.rsplit('.', 1)[1] in ['pptx', 'ppt'] %}
+                  <li class="mdl-list__item mdl-list__item--three-line archivo">
+                    <span class="mdl-list__item-primary-content">
+                      <i class="material-icons mdl-list__item-icon">image</i>
+                      <span><a href="/uploads/{{ file.archivo }}">{{ file.titulo }}</a></span>
+                      <span class="mdl-list__item-text-body">{{ file.descripcion }}</span>
+                    </span>
+                    <span class="mdl-list__item-secondary-action">
+                      <a class="mdl-list__item-secondary-action" href="#"><i class="material-icons">check_circle</i></a>
+                      <a class="mdl-list__item-secondary-action" href="#"><i class="material-icons">block</i></a>
+                      <a class="mdl-list__item-secondary-action" href="#"><i class="material-icons">star_border</i></a>
+                    </span>
+                  </li>
+                {% endif %}
+              {% endfor %}
+          {% else %}
+            <li class="mdl-list__item archivo">
+              <span class="mdl-list__item-primary-content">
+                <i class="material-icons mdl-list__item-icon">error</i>
+                <a href="#">No hay archivos</a>
+            </span>
+            </li>
+          {% endif %}
+        </ul>
       </div>
       <div class="mdl-tabs__panel" id="txt">
-        {% if archivos %}
-          <ul class="demo-list-icon mdl-list default">
-            {% for archivo in archivos %}
-              {% if archivo.rsplit('.', 1)[1] == 'txt' %}
-              <li class="mdl-list__item archivo">
-                <span class="mdl-list__item-primary-content">
-                  <i class="material-icons mdl-list__item-icon">description</i>
-                  <a href="/uploads/{{ archivo }}">{{ archivo }}</a>
-                </span>
-              </li>
-              {% endif %}
-            {% endfor %}
-          </ul>
-        {% else %}
-          <ul class="mdl-list">
-            {% for tema in temas %}
-              <li class="mdl-list__item archivo">
-                <span class="mdl-list__item-primary-content">
-                  <i class="material-icons mdl-list__item-icon">mode_comment</i>
-                  <a href="#">Lo sentimos, por el momento no hay archivos.</a>
-                </span>
-              </li>
-            {% endfor %}
-          </ul>
-        {% endif %}
-      </div>
-      <div class="mdl-tabs__panel" id="otros">
-        {% if archivos %}
-          <ul class="demo-list-icon mdl-list">
-            {% for archivo in archivos %}
-              {% if archivo.rsplit('.', 1)[1] not in ['jpg', 'jpeg', 'gif', 'pdf', 'docx', 'pptx', 'txt'] %}
-              <li class="mdl-list__item archivo">
-                <span class="mdl-list__item-primary-content">
-                  <i class="material-icons mdl-list__item-icon">attachment</i>
-                  <a href="/uploads/{{ archivo }}">{{ archivo }}</a>
-                </span>
-              </li>
-              {% endif %}
-            {% endfor %}
-          </ul>
-        {% else %}
-          <p class="archivo">No hay archivos</p>
-        {% endif %}
+        <ul class="mdl-list">
+          {% if archivos %}
+              {% for file in archivos %}
+                {% if file.archivo.rsplit('.', 1)[1] == 'txt' %}
+                  <li class="mdl-list__item mdl-list__item--three-line archivo">
+                    <span class="mdl-list__item-primary-content">
+                      <i class="material-icons mdl-list__item-icon">image</i>
+                      <span><a href="/uploads/{{ file.archivo }}">{{ file.titulo }}</a></span>
+                      <span class="mdl-list__item-text-body">{{ file.descripcion }}</span>
+                    </span>
+                    <span class="mdl-list__item-secondary-action">
+                      <a class="mdl-list__item-secondary-action" href="#"><i class="material-icons">check_circle</i></a>
+                      <a class="mdl-list__item-secondary-action" href="#"><i class="material-icons">block</i></a>
+                      <a class="mdl-list__item-secondary-action" href="#"><i class="material-icons">star_border</i></a>
+                    </span>
+                  </li>
+                {% endif %}
+              {% endfor %}
+          {% else %}
+            <li class="mdl-list__item archivo">
+              <span class="mdl-list__item-primary-content">
+                <i class="material-icons mdl-list__item-icon">error</i>
+                <a href="#">No hay archivos</a>
+            </span>
+            </li>
+          {% endif %}
+        </ul>
+      </div><div class="mdl-tabs__panel" id="otros">
+        <ul class="mdl-list">
+          {% if archivos %}
+              {% for file in archivos %}
+                {% if file.archivo.rsplit('.', 1)[1] not in ['jpg', 'jpeg', 'gif', 'png', 'pdf', 'docx', 'doc', 'pptx', 'ppt', 'txt'] %}
+                  <li class="mdl-list__item mdl-list__item--three-line archivo">
+                    <span class="mdl-list__item-primary-content">
+                      <i class="material-icons mdl-list__item-icon">image</i>
+                      <span><a href="/uploads/{{ file.archivo }}">{{ file.titulo }}</a></span>
+                      <span class="mdl-list__item-text-body">{{ file.descripcion }}</span>
+                    </span>
+                    <span class="mdl-list__item-secondary-action">
+                      <a class="mdl-list__item-secondary-action" href="#"><i class="material-icons">check_circle</i></a>
+                      <a class="mdl-list__item-secondary-action" href="#"><i class="material-icons">block</i></a>
+                      <a class="mdl-list__item-secondary-action" href="#"><i class="material-icons">star_border</i></a>
+                    </span>
+                  </li>
+                {% endif %}
+              {% endfor %}
+          {% else %}
+            <li class="mdl-list__item archivo">
+              <span class="mdl-list__item-primary-content">
+                <i class="material-icons mdl-list__item-icon">error</i>
+                <a href="#">No hay archivos</a>
+            </span>
+            </li>
+          {% endif %}
+        </ul>
       </div>
   </div>
 {% endblock %}

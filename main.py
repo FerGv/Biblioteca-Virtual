@@ -21,6 +21,8 @@ from model import db
 from model import User
 from model import Comment
 from model import Theme
+from model import File
+from model import Materia
 
 from helper import date_format
 
@@ -96,7 +98,9 @@ def logout():
 
 @app.route('/upload', methods = ['GET', 'POST'])
 def upload():
-    if request.method == 'POST':
+    upload_file_form = forms.UploadFile_Form(request.form)
+
+    if request.method == 'POST' and upload_file_form.validate():
         if 'file' not in request.files:
             flash('No hay seccion de archivos')
             return redirect(request.url)
@@ -109,10 +113,22 @@ def upload():
         if file:
             filename = secure_filename(file.filename)
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+
+            archivo = File(session['user_id'],
+                            1,
+                            upload_file_form.titulo.data,
+                            upload_file_form.descripcion.data,
+                            filename,
+                            0,
+                            0)
+
+            db.session.add(archivo)
+            db.session.commit()
+
             return redirect(url_for('archivos'))
     else:
-        title = 'Upload'
-        return render_template('upload.html', title = title)
+        title = 'Subir archivo'
+        return render_template('upload.html', title = title, form = upload_file_form)
 
 @app.route('/uploads/<filename>')
 def uploads(filename):
@@ -120,8 +136,10 @@ def uploads(filename):
 
 @app.route('/archivos')
 def archivos():
-    mypath = '/home/fer_gv/GitHub/Biblioteca-Virtual/Archivos/'
-    archivos = [f for f in os.listdir(mypath) if os.path.isfile(os.path.join(mypath, f))]
+#    mypath = '/home/fer_gv/GitHub/Biblioteca-Virtual/Archivos/'
+#    archivos = [f for f in os.listdir(mypath) if os.path.isfile(os.path.join(mypath, f))]
+
+    archivos = File.query.all()
 
     title = 'Biblioteca'
     return render_template('archivos.html', archivos = archivos, title = title)

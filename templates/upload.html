@@ -65,6 +65,7 @@
 .form {
   padding: 30px;
 }
+ul {color: #c62727}
 {% endblock %}
 
 {% block contenido %}
@@ -77,41 +78,55 @@
       <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
 
       <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-        <input type="text" id="title" class="mdl-textfield__input" required>
-        <label class="mdl-textfield__label" for="title">Título</label>
+        {{form.titulo(class_='mdl-textfield__input')|safe}}
+        {{form.titulo.label(class_='mdl-textfield__label')}}
       </div>
+      {% if form.titulo.errors %}
+      <ul>
+        {% for error in form.titulo.errors %}
+        <li> {{ error }} </li>
+        {% endfor %}
+      </ul>
+      {% endif  %}
 
       <br>
 
       <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-        <input type="text" id="desc" class="mdl-textfield__input" required>
-        <label class="mdl-textfield__label" for="desc">Descripción</label>
+        {{form.descripcion(class_='mdl-textfield__input')|safe}}
+        {{form.descripcion.label(class_='mdl-textfield__label')}}
       </div>
+      {% if form.descripcion.errors %}
+      <ul>
+        {% for error in form.descripcion.errors %}
+        <li> {{ error }} </li>
+        {% endfor %}
+      </ul>
+      {% endif  %}
 
       <br><br>
 
       <input id="uploadFile" placeholder="Choose File" disabled="disabled" />
       <div class="fileUpload btn btn-primary">
           <span>Upload</span>
-          <input id="uploadBtn" type="file" name="file" class="upload" required/>
+          <input id="uploadBtn" type="file" name="file" class="upload"/>
       </div>
       <script>
       document.getElementById("uploadBtn").onchange = function () {document.getElementById("uploadFile").value = this.value;}
       </script>
+      {% with messages = get_flashed_messages() %}
+        {% if messages %}
+          {% for message in messages %}
+            <div class="alert">
+              <p>Debes selecionar un archivo</p>
+            </div>
+          {% endfor %}
+        {% endif %}
+      {% endwith %}
 
       <br><br><br>
 
       <input type="submit" name="Entrar" value="Subir Archivo" class="mdl-button mdl-button--raised mdl-button--colored">
 
-      {% with messages = get_flashed_messages() %}
-        {% if messages %}
-          {% for message in messages %}
-          <div class="alert">
-            {{ message }}
-          </div>
-          {% endfor %}
-        {% endif %}
-      {% endwith %}
     </form>
   </section>
 {% endblock %}
