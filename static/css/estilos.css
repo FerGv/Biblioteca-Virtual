@@ -24,6 +24,7 @@
 /* ----- INDEX ----- */
 .center {
   width: 100%;
+  height: 100%;
   text-align: center;
 }
 .titulo {
@@ -31,36 +32,67 @@
   color: #0d47a1;
   font-size: 6em;
 }
-.enlace {
+.options {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  width: 60%;
+  height: 300px;
+  margin: auto;
+}
+.option {
+  position: relative;
   display: inline-block;
-  padding: 50px;
-  margin: 10px 50px 0 60px;
-  background: #fff;
+  width: 40%;
+  height: 100%;
   border-radius: 50%;
-  transition: all .5s;
+  overflow: hidden;
+}
+.icono {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.5);
+}
+.icono .icon {
   color: #0d47a1;
+  font-size: 8em;
+  transition: all .5s;
 }
-.enlace:hover {
-  background-color: rgba(0, 0, 0, 0.8);
-  cursor: pointer;
+.texto {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  margin-top: 100%;
+  transition: all .5s;
+  background-color: rgba(0, 0, 0, 0.9);
 }
-.enlace .icon {
-  font-size: 7em;
-}
-.text .enlace_text {
-  display: inline-block;
-  padding: 20px;
-  margin: 0 30px;
-  background: #fff;
+.texto a {
+  width: 100%;
+  height: 100%;
   text-decoration: none;
-  font-size: 3em;
-  border-radius: 10px;
-  transition: all .5s;
+}
+.texto a p {
+  margin-top: 40%;
   color: #0d47a1;
+  font-size: 3em;
+  font-weight: bold;
 }
-.text .enlace_text:hover {
-  background-color: rgba(0, 0, 0, 0.8);
+.option:hover .texto {
+  margin-top: 0;
 }
+.option:hover .icon {
+  opacity: 0;
+}
+
 
 /* ----- ARCHIVOS ----- */
 .archivo {
