@@ -2,14 +2,173 @@
 
 {% block title %}{{ title }}{% endblock %}
 
-{% block css %}
-  .titulo {
-    text-align: center;
-    background: none;
-    color: #fff;
-  }
-{% endblock %}
-
 {% block contenido %}
-  <h1 class="titulo">Favoritos</h1>
+  <br><br>
+
+  <div class="mdl-tabs mdl-js-tabs mdl-js-ripple-effect">
+      <div class="mdl-tabs__tab-bar">
+          <a href="#img" class="mdl-tabs__tab is-active tab">Imágenes</a>
+          <a href="#pdf" class="mdl-tabs__tab tab">PDF</a>
+          <a href="#word" class="mdl-tabs__tab tab">WORD</a>
+          <a href="#ppt" class="mdl-tabs__tab tab">POWERPOINT</a>
+          <a href="#txt" class="mdl-tabs__tab tab">TXT</a>
+          <a href="#otros" class="mdl-tabs__tab tab">OTROS</a>
+      </div>
+
+      <div class="mdl-tabs__panel is-active" id="img">
+        <ul class="mdl-list">
+          {% if favoritos %}
+            {% for file in favoritos %}
+              {% if file.user_id == current_user %}
+                {% if file.archivo.rsplit('.', 1)[1] in ['jpg', 'jpeg', 'gif', 'png'] %}
+                  <li class="mdl-list__item mdl-list__item--three-line archivo">
+                    <span class="mdl-list__item-primary-content">
+                      <i class="material-icons mdl-list__item-icon">image</i>
+                      <span><a href="/uploads/{{ file.archivo }}">{{ file.titulo }}</a></span>
+                      <span class="mdl-list__item-text-body">{{ file.descripcion }}</span>
+                    </span>
+                  </li>
+                {% endif %}
+              {% endif %}
+            {% endfor %}
+          {% else %}
+            <li class="mdl-list__item archivo">
+              <span class="mdl-list__item-primary-content">
+                <i class="material-icons mdl-list__item-icon">error</i>
+                <a href="#">No hay favoritos</a>
+            </span>
+            </li>
+          {% endif %}
+        </ul>
+      </div>
+      <div class="mdl-tabs__panel" id="pdf">
+        <ul class="mdl-list">
+          {% if favoritos %}
+            {% for file in favoritos %}
+              {% if file.user_id == current_user %}
+                {% if file.archivo.rsplit('.', 1)[1] == 'pdf' %}
+                  <li class="mdl-list__item mdl-list__item--three-line archivo">
+                    <span class="mdl-list__item-primary-content">
+                      <i class="material-icons mdl-list__item-icon">image</i>
+                      <span><a href="/uploads/{{ file.archivo }}">{{ file.titulo }}</a></span>
+                      <span class="mdl-list__item-text-body">{{ file.descripcion }}</span>
+                    </span>
+                  </li>
+                {% endif %}
+              {% endif %}
+            {% endfor %}
+          {% else %}
+            <li class="mdl-list__item archivo">
+              <span class="mdl-list__item-primary-content">
+                <i class="material-icons mdl-list__item-icon">error</i>
+                <a href="#">No hay favoritos</a>
+            </span>
+            </li>
+          {% endif %}
+        </ul>
+      </div>
+      <div class="mdl-tabs__panel" id="word">
+        <ul class="mdl-list">
+          {% if favoritos %}
+            {% for file in favoritos %}
+              {% if file.user_id == current_user %}
+                {% if file.archivo.rsplit('.', 1)[1] in ['doc', 'docx'] %}
+                  <li class="mdl-list__item mdl-list__item--three-line archivo">
+                    <span class="mdl-list__item-primary-content">
+                      <i class="material-icons mdl-list__item-icon">image</i>
+                      <span><a href="/uploads/{{ file.archivo }}">{{ file.titulo }}</a></span>
+                      <span class="mdl-list__item-text-body">{{ file.descripcion }}</span>
+                    </span>
+                  </li>
+                {% endif %}
+              {% endif %}
+            {% endfor %}
+          {% else %}
+            <li class="mdl-list__item archivo">
+              <span class="mdl-list__item-primary-content">
+                <i class="material-icons mdl-list__item-icon">error</i>
+                <a href="#">No hay favoritos</a>
+            </span>
+            </li>
+          {% endif %}
+        </ul>
+      </div>
+      <div class="mdl-tabs__panel" id="ppt">
+        <ul class="mdl-list">
+          {% if favoritos %}
+            {% for file in favoritos %}
+              {% if file.user_id == current_user %}
+                {% if file.archivo.rsplit('.', 1)[1] in ['ppt', 'pptx'] %}
+                  <li class="mdl-list__item mdl-list__item--three-line archivo">
+                    <span class="mdl-list__item-primary-content">
+                      <i class="material-icons mdl-list__item-icon">image</i>
+                      <span><a href="/uploads/{{ file.archivo }}">{{ file.titulo }}</a></span>
+                      <span class="mdl-list__item-text-body">{{ file.descripcion }}</span>
+                    </span>
+                  </li>
+                {% endif %}
+              {% endif %}
+            {% endfor %}
+          {% else %}
+            <li class="mdl-list__item archivo">
+              <span class="mdl-list__item-primary-content">
+                <i class="material-icons mdl-list__item-icon">error</i>
+                <a href="#">No hay favoritos</a>
+            </span>
+            </li>
+          {% endif %}
+        </ul>
+      </div>
+      <div class="mdl-tabs__panel" id="txt">
+        <ul class="mdl-list">
+          {% if favoritos %}
+            {% for file in favoritos %}
+              {% if file.user_id == current_user %}
+                {% if file.archivo.rsplit('.', 1)[1] == 'txt' %}
+                  <li class="mdl-list__item mdl-list__item--three-line archivo">
+                    <span class="mdl-list__item-primary-content">
+                      <i class="material-icons mdl-list__item-icon">image</i>
+                      <span><a href="/uploads/{{ file.archivo }}">{{ file.titulo }}</a></span>
+                      <span class="mdl-list__item-text-body">{{ file.descripcion }}</span>
+                    </span>
+                  </li>
+                {% endif %}
+              {% endif %}
+            {% endfor %}
+          {% else %}
+            <li class="mdl-list__item archivo">
+              <span class="mdl-list__item-primary-content">
+                <i class="material-icons mdl-list__item-icon">error</i>
+                <a href="#">No hay favoritos</a>
+            </span>
+            </li>
+          {% endif %}
+        </ul>
+      </div><div class="mdl-tabs__panel" id="otros">
+        <ul class="mdl-list">
+          {% if favoritos %}
+            {% for file in favoritos %}
+              {% if file.user_id == current_user %}
+                {% if file.archivo.rsplit('.', 1)[1] not in ['jpg', 'jpeg', 'gif', 'png', 'pdf', 'docx', 'doc', 'pptx', 'ppt', 'txt'] %}
+                  <li class="mdl-list__item mdl-list__item--three-line archivo">
+                    <span class="mdl-list__item-primary-content">
+                      <i class="material-icons mdl-list__item-icon">image</i>
+                      <span><a href="/uploads/{{ file.archivo }}">{{ file.titulo }}</a></span>
+                      <span class="mdl-list__item-text-body">{{ file.descripcion }}</span>
+                    </span>
+                  </li>
+                {% endif %}
+              {% endif %}
+            {% endfor %}
+          {% else %}
+            <li class="mdl-list__item archivo">
+              <span class="mdl-list__item-primary-content">
+                <i class="material-icons mdl-list__item-icon">error</i>
+                <a href="#">No hay favoritos</a>
+            </span>
+            </li>
+          {% endif %}
+        </ul>
+      </div>
+  </div>
 {% endblock %}

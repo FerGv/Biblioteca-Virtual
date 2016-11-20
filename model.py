@@ -70,6 +70,7 @@ class File(db.Model):
     archivo = db.Column(db.Text)
     likes = db.Column(db.Integer)
     dislikes = db.Column(db.Integer)
+    favorito = db.relationship('Favorito')
 
     def __init__(self, user_id, materia_id, titulo, descripcion, archivo, likes, dislikes):
         self.user_id = user_id
@@ -79,3 +80,14 @@ class File(db.Model):
         self.archivo = archivo
         self.likes = likes
         self.dislikes = dislikes
+
+class Favorito(db.Model):
+    __tablename__ = 'favoritos'
+
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer)
+    file_id = db.Column(db.Integer, db.ForeignKey('files.id'))
+
+    def __init__(self, user_id, file_id):
+        self.user_id = user_id
+        self.file_id = file_id

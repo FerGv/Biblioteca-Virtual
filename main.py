@@ -23,6 +23,7 @@ from model import Comment
 from model import Theme
 from model import File
 from model import Materia
+from model import Favorito
 
 from helper import date_format
 
@@ -196,27 +197,32 @@ def crear_tema():
 
 @app.route('/favoritos', methods = ['GET', 'FORM'])
 def favoritos():
+    favoritos = Favorito.query.join(File).add_columns(Favorito.user_id, File.titulo, File.descripcion, File.archivo, File.materia_id)
+    current_user = session['user_id']
     title = 'Favoritos'
-    return render_template('favoritos.html', title = title)
+    return render_template('favoritos.html', title = title, favoritos = favoritos, current_user = current_user)
 
-@app.route('/like/<int:id>', methods = ['GET', 'FORM'])
-def like(id):
-    archivo = File.query.filter_by(id = id).first()
+@app.route('/like/<int:file_id>', methods = ['GET', 'FORM'])
+def like(file_id):
+    archivo = File.query.filter_by(id = file_id).first()
     archivo.likes = archivo.likes + 1
     db.session.commit()
 
     return redirect(url_for('archivos'))
 
-@app.route('/dislike/<int:id>', methods = ['GET', 'FORM'])
-def dislike(id):
-    archivo = File.query.filter_by(id = id).first()
+@app.route('/dislike/<int:file_id>', methods = ['GET', 'FORM'])
+def dislike(file_id):
+    archivo = File.query.filter_by(id = file_id).first()
     archivo.dislikes = archivo.dislikes + 1
     db.session.commit()
 
     return redirect(url_for('archivos'))
 
-@app.route('/favorito/<int:id>', methods = ['GET', 'FORM'])
-def favorito(id):
+@app.route('/favorito/<int:file_id>', methods = ['GET', 'FORM'])
+def favorito(file_id):
+    favorito = Favorito(session['user_id'], file_id)
+    db.session.add(favorito)
+    db.session.commit()
 
     return redirect(url_for('archivos'))
 
