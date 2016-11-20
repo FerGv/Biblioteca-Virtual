@@ -30,9 +30,9 @@
                       <span class="mdl-list__item-text-body">{{ file.descripcion }}</span>
                     </span>
                     <span class="mdl-list__item-secondary-action">
-                      <a class="mdl-list__item-secondary-action" href="#"><i class="material-icons">check_circle</i></a>
-                      <a class="mdl-list__item-secondary-action" href="#"><i class="material-icons">block</i></a>
-                      <a class="mdl-list__item-secondary-action" href="#"><i class="material-icons">star_border</i></a>
+                      <a class="mdl-list__item-secondary-action" href="/like/{{ file.id }}"><i class="material-icons">check_circle</i></a>
+                      <a class="mdl-list__item-secondary-action" href="/dislike/{{ file.id }}"><i class="material-icons">block</i></a>
+                      <a class="mdl-list__item-secondary-action" href="/favorito/{{ file.id }}"><i class="material-icons">star_border</i></a>
                     </span>
                   </li>
                 {% endif %}

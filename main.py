@@ -33,7 +33,7 @@ csrf = CsrfProtect()
 
 @app.before_request
 def before_request():
-    if 'username' not in session and request.endpoint in ['upload', 'archivos', 'uploads', 'borrar_archivo', 'comentarios', 'bienvenida', 'temas', 'crear_tema', 'logout']:
+    if 'username' not in session and request.endpoint in ['upload', 'archivos', 'uploads', 'borrar_archivo', 'comentarios', 'bienvenida', 'temas', 'crear_tema', 'logout', 'favoritos', 'like', 'dislike', 'favorito']:
         return redirect(url_for('login'))
     elif 'username' in session and request.endpoint in ['index', 'login', 'registro']:
         return redirect(url_for('bienvenida'))
@@ -193,6 +193,32 @@ def crear_tema():
 
     title = 'Crear Tema'
     return render_template('crear_tema.html', form = theme_form, title = title)
+
+@app.route('/favoritos', methods = ['GET', 'FORM'])
+def favoritos():
+    title = 'Favoritos'
+    return render_template('favoritos.html', title = title)
+
+@app.route('/like/<int:id>', methods = ['GET', 'FORM'])
+def like(id):
+    archivo = File.query.filter_by(id = id).first()
+    archivo.likes = archivo.likes + 1
+    db.session.commit()
+
+    return redirect(url_for('archivos'))
+
+@app.route('/dislike/<int:id>', methods = ['GET', 'FORM'])
+def dislike(id):
+    archivo = File.query.filter_by(id = id).first()
+    archivo.dislikes = archivo.dislikes + 1
+    db.session.commit()
+
+    return redirect(url_for('archivos'))
+
+@app.route('/favorito/<int:id>', methods = ['GET', 'FORM'])
+def favorito(id):
+
+    return redirect(url_for('archivos'))
 
 if __name__ == '__main__':
     csrf.init_app(app)

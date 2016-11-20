@@ -78,13 +78,13 @@
 .nuevo {
   position: fixed;
   top: 10px;
-  left: 400px;
+  left: 300px;
   z-index: 100;
 }
 .nuevo_link {
   position: fixed;
   top: 30px;
-  left: 465px;
+  left: 365px;
   text-decoration: none;
   font-size: 1.5em;
   font-weight: bold;
