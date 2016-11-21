@@ -34,7 +34,7 @@ csrf = CsrfProtect()
 
 @app.before_request
 def before_request():
-    if 'username' not in session and request.endpoint in ['upload', 'archivos', 'uploads', 'borrar_archivo', 'comentarios', 'bienvenida', 'temas', 'crear_tema', 'logout', 'favoritos', 'like', 'dislike', 'favorito']:
+    if 'username' not in session and request.endpoint in ['upload', 'archivos', 'uploads', 'borrar_archivo', 'comentarios', 'bienvenida', 'temas', 'crear_tema', 'logout', 'favoritos', 'like', 'dislike', 'favorito', 'favorito_eliminar']:
         return redirect(url_for('login'))
     elif 'username' in session and request.endpoint in ['index', 'login', 'registro']:
         return redirect(url_for('bienvenida'))
@@ -137,13 +137,18 @@ def uploads(filename):
 
 @app.route('/archivos')
 def archivos():
-#    mypath = '/home/fer_gv/GitHub/Biblioteca-Virtual/Archivos/'
-#    archivos = [f for f in os.listdir(mypath) if os.path.isfile(os.path.join(mypath, f))]
+    favoritos = Favorito.query.join(File).add_columns(Favorito.user_id, File.titulo)
+    current_user = session['user_id']
+    fav = []
+
+    for file in favoritos:
+        if file.user_id == current_user:
+            fav.append(file.titulo)
 
     archivos = File.query.all()
 
     title = 'Biblioteca'
-    return render_template('archivos.html', archivos = archivos, title = title)
+    return render_template('archivos.html', archivos = archivos, title = title, fav = fav)
 
 @app.route('/borrar_archivo/<filename>')
 def borrar_archivo(filename):
@@ -195,14 +200,14 @@ def crear_tema():
     title = 'Crear Tema'
     return render_template('crear_tema.html', form = theme_form, title = title)
 
-@app.route('/favoritos', methods = ['GET', 'FORM'])
+@app.route('/favoritos')
 def favoritos():
     favoritos = Favorito.query.join(File).add_columns(Favorito.user_id, File.titulo, File.descripcion, File.archivo, File.materia_id)
     current_user = session['user_id']
     title = 'Favoritos'
     return render_template('favoritos.html', title = title, favoritos = favoritos, current_user = current_user)
 
-@app.route('/like/<int:file_id>', methods = ['GET', 'FORM'])
+@app.route('/like/<int:file_id>')
 def like(file_id):
     archivo = File.query.filter_by(id = file_id).first()
     archivo.likes = archivo.likes + 1
@@ -210,7 +215,7 @@ def like(file_id):
 
     return redirect(url_for('archivos'))
 
-@app.route('/dislike/<int:file_id>', methods = ['GET', 'FORM'])
+@app.route('/dislike/<int:file_id>')
 def dislike(file_id):
     archivo = File.query.filter_by(id = file_id).first()
     archivo.dislikes = archivo.dislikes + 1
@@ -218,10 +223,25 @@ def dislike(file_id):
 
     return redirect(url_for('archivos'))
 
-@app.route('/favorito/<int:file_id>', methods = ['GET', 'FORM'])
+@app.route('/favorito/<int:file_id>')
 def favorito(file_id):
     favorito = Favorito(session['user_id'], file_id)
     db.session.add(favorito)
+    db.session.commit()
+
+    return redirect(url_for('archivos'))
+
+@app.route('/favorito_eliminar/<int:file_id>')
+def favorito_eliminar(file_id):
+    favoritos = Favorito.query.all()
+    current_user = session['user_id']
+
+    for file in favoritos:
+        if file.user_id == current_user and file.file_id == file_id:
+            fav_id = file.id
+
+    fav = Favorito.query.get(fav_id)
+    db.session.delete(fav)
     db.session.commit()
 
     return redirect(url_for('archivos'))

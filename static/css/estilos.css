@@ -102,7 +102,7 @@
 }
 .archivo:hover {
   background-color: rgba(0, 0, 0, 0.6);
-  font-size: 1.8em;
+  font-size: 1.9em;
 }
 .archivo a {
   text-decoration: none;
@@ -121,6 +121,9 @@
   font-size: 1.5em;
   font-weight: bold;
   z-index: 100;
+}
+.contenedor {
+  font-size: 1.2em
 }
 
 
