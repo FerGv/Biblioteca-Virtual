@@ -24,6 +24,7 @@ from model import Theme
 from model import File
 from model import Materia
 from model import Favorito
+from model import Like
 
 from helper import date_format
 
@@ -138,22 +139,38 @@ def uploads(filename):
 @app.route('/archivos')
 def archivos():
     favoritos = Favorito.query.join(File).add_columns(Favorito.user_id, File.titulo)
+    likes = Like.query.join(File).add_columns(Like.user_id, File.titulo, Like.like)
     current_user = session['user_id']
     fav = []
+    like = []
+    dislike = []
 
     for file in favoritos:
         if file.user_id == current_user:
             fav.append(file.titulo)
 
+    for file in likes:
+        if file.user_id == current_user:
+            if file.like == 1:
+                like.append(file.titulo)
+            else:
+                dislike.append(file.titulo)
+
     archivos = File.query.all()
+    for file in archivos:
+        if file.dislikes == 6:
+            return redirect(url_for('borrar_archivo', file_id = file.id))
 
     title = 'Biblioteca'
-    return render_template('archivos.html', archivos = archivos, title = title, fav = fav)
+    return render_template('archivos.html', archivos = archivos, title = title, fav = fav, like = like, dislike = dislike)
 
-@app.route('/borrar_archivo/<filename>')
-def borrar_archivo(filename):
+@app.route('/borrar_archivo/<int:file_id>')
+def borrar_archivo(file_id):
     mypath = '/home/fer_gv/GitHub/Biblioteca-Virtual/Archivos/'
-    os.remove(os.path.join(mypath, filename))
+    archivo = File.query.get(file_id)
+    os.remove(os.path.join(mypath, archivo.archivo))
+    db.session.delete(archivo)
+    db.session.commit()
 
     return redirect(url_for('archivos'))
 
@@ -209,17 +226,83 @@ def favoritos():
 
 @app.route('/like/<int:file_id>')
 def like(file_id):
+    likes = Like.query.all()
     archivo = File.query.filter_by(id = file_id).first()
-    archivo.likes = archivo.likes + 1
-    db.session.commit()
+
+    if likes:
+        for like in likes:
+            if like.user_id == session['user_id'] and like.file_id == file_id:
+                if like.like == 1 and like.dislike == 0:
+                    archivo.likes = archivo.likes - 1
+                    archivo.dislikes = archivo.dislikes + 1
+                    like.like = 0
+                    like.dislike = 1
+                    db.session.commit()
+
+                    return redirect(url_for('archivos'))
+
+                elif like.like == 0 and like.dislike == 1:
+                    archivo.likes = archivo.likes + 1
+                    archivo.dislikes = archivo.dislikes - 1
+                    like.like = 1
+                    like.dislike = 0
+                    db.session.commit()
+
+                    return redirect(url_for('archivos'))
+
+        nuevo_like = Like(file_id, 1, 0, session['user_id'])
+        archivo.likes = archivo.likes + 1
+        db.session.add(nuevo_like)
+        db.session.commit()
+
+        return redirect(url_for('archivos'))
+
+    else:
+        nuevo_like = Like(file_id, 1, 0, session['user_id'])
+        archivo.likes = archivo.likes + 1
+        db.session.add(nuevo_like)
+        db.session.commit()
 
     return redirect(url_for('archivos'))
 
 @app.route('/dislike/<int:file_id>')
 def dislike(file_id):
+    likes = Like.query.all()
     archivo = File.query.filter_by(id = file_id).first()
-    archivo.dislikes = archivo.dislikes + 1
-    db.session.commit()
+
+    if likes:
+        for like in likes:
+            if like.user_id == session['user_id'] and like.file_id == file_id:
+                if like.like == 1 and like.dislike == 0:
+                    archivo.likes = archivo.likes - 1
+                    archivo.dislikes = archivo.dislikes + 1
+                    like.like = 0
+                    like.dislike = 1
+                    db.session.commit()
+
+                    return redirect(url_for('archivos'))
+
+                elif like.like == 0 and like.dislike == 1:
+                    archivo.likes = archivo.likes + 1
+                    archivo.dislikes = archivo.dislikes - 1
+                    like.like = 1
+                    like.dislike = 0
+                    db.session.commit()
+
+                    return redirect(url_for('archivos'))
+
+        nuevo_like = Like(file_id, 0, 1, session['user_id'])
+        archivo.dislikes = archivo.dislikes + 1
+        db.session.add(nuevo_like)
+        db.session.commit()
+
+        return redirect(url_for('archivos'))
+
+    else:
+        nuevo_like = Like(file_id, 0, 1, session['user_id'])
+        archivo.dislikes = archivo.dislikes + 1
+        db.session.add(nuevo_like)
+        db.session.commit()
 
     return redirect(url_for('archivos'))
 

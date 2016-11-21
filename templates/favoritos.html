@@ -27,6 +27,30 @@
                       <span><a href="/uploads/{{ file.archivo }}">{{ file.titulo }}</a></span>
                       <span class="mdl-list__item-text-body">{{ file.descripcion }}</span>
                     </span>
+                    <span class="mdl-list__item-secondary-content">
+                      <span class="mdl-list__item-secondary-info">Likes</span>
+                      {% if file.titulo in like %}
+                        <a class="contenedor" href="/like/{{ file.id }}">{{ file.likes }}<i class="material-icons">check_circle</i></a>
+                      {% else %}
+                        <a class="contenedor" href="/like/{{ file.id }}">{{ file.likes }}<i class="material-icons">check</i></a>
+                      {% endif %}
+                    </span>
+                    <span class="mdl-list__item-secondary-content">
+                      <span class="mdl-list__item-secondary-info">Dislikes</span>
+                      {% if file.titulo in dislike %}
+                        <a class="contenedor" href="/dislike/{{ file.id }}">{{ file.dislikes }}<i class="material-icons">cancel</i></a>
+                      {% else %}
+                        <a class="contenedor" href="/dislike/{{ file.id }}">{{ file.dislikes }}<i class="material-icons">clear</i></a>
+                      {% endif %}
+                    </span>
+                    <span class="mdl-list__item-secondary-content">
+                      <span class="mdl-list__item-secondary-info">Fav</span>
+                      {% if file.titulo in fav %}
+                        <a class="contenedor" href="/favorito_eliminar/{{ file.id }}"><i class="material-icons">star</i></a>
+                      {% else %}
+                        <a class="contenedor" href="/favorito/{{ file.id }}"><i class="material-icons">star_border</i></a>
+                      {% endif %}
+                    </span>
                   </li>
                 {% endif %}
               {% endif %}
@@ -52,6 +76,30 @@
                       <i class="material-icons mdl-list__item-icon">image</i>
                       <span><a href="/uploads/{{ file.archivo }}">{{ file.titulo }}</a></span>
                       <span class="mdl-list__item-text-body">{{ file.descripcion }}</span>
+                    </span>
+                    <span class="mdl-list__item-secondary-content">
+                      <span class="mdl-list__item-secondary-info">Likes</span>
+                      {% if file.titulo in like %}
+                        <a class="contenedor" href="/like/{{ file.id }}">{{ file.likes }}<i class="material-icons">check_circle</i></a>
+                      {% else %}
+                        <a class="contenedor" href="/like/{{ file.id }}">{{ file.likes }}<i class="material-icons">check</i></a>
+                      {% endif %}
+                    </span>
+                    <span class="mdl-list__item-secondary-content">
+                      <span class="mdl-list__item-secondary-info">Dislikes</span>
+                      {% if file.titulo in dislike %}
+                        <a class="contenedor" href="/dislike/{{ file.id }}">{{ file.dislikes }}<i class="material-icons">cancel</i></a>
+                      {% else %}
+                        <a class="contenedor" href="/dislike/{{ file.id }}">{{ file.dislikes }}<i class="material-icons">clear</i></a>
+                      {% endif %}
+                    </span>
+                    <span class="mdl-list__item-secondary-content">
+                      <span class="mdl-list__item-secondary-info">Fav</span>
+                      {% if file.titulo in fav %}
+                        <a class="contenedor" href="/favorito_eliminar/{{ file.id }}"><i class="material-icons">star</i></a>
+                      {% else %}
+                        <a class="contenedor" href="/favorito/{{ file.id }}"><i class="material-icons">star_border</i></a>
+                      {% endif %}
                     </span>
                   </li>
                 {% endif %}
@@ -79,6 +127,30 @@
                       <span><a href="/uploads/{{ file.archivo }}">{{ file.titulo }}</a></span>
                       <span class="mdl-list__item-text-body">{{ file.descripcion }}</span>
                     </span>
+                    <span class="mdl-list__item-secondary-content">
+                      <span class="mdl-list__item-secondary-info">Likes</span>
+                      {% if file.titulo in like %}
+                        <a class="contenedor" href="/like/{{ file.id }}">{{ file.likes }}<i class="material-icons">check_circle</i></a>
+                      {% else %}
+                        <a class="contenedor" href="/like/{{ file.id }}">{{ file.likes }}<i class="material-icons">check</i></a>
+                      {% endif %}
+                    </span>
+                    <span class="mdl-list__item-secondary-content">
+                      <span class="mdl-list__item-secondary-info">Dislikes</span>
+                      {% if file.titulo in dislike %}
+                        <a class="contenedor" href="/dislike/{{ file.id }}">{{ file.dislikes }}<i class="material-icons">cancel</i></a>
+                      {% else %}
+                        <a class="contenedor" href="/dislike/{{ file.id }}">{{ file.dislikes }}<i class="material-icons">clear</i></a>
+                      {% endif %}
+                    </span>
+                    <span class="mdl-list__item-secondary-content">
+                      <span class="mdl-list__item-secondary-info">Fav</span>
+                      {% if file.titulo in fav %}
+                        <a class="contenedor" href="/favorito_eliminar/{{ file.id }}"><i class="material-icons">star</i></a>
+                      {% else %}
+                        <a class="contenedor" href="/favorito/{{ file.id }}"><i class="material-icons">star_border</i></a>
+                      {% endif %}
+                    </span>
                   </li>
                 {% endif %}
               {% endif %}
@@ -104,6 +176,30 @@
                       <i class="material-icons mdl-list__item-icon">image</i>
                       <span><a href="/uploads/{{ file.archivo }}">{{ file.titulo }}</a></span>
                       <span class="mdl-list__item-text-body">{{ file.descripcion }}</span>
+                    </span>
+                    <span class="mdl-list__item-secondary-content">
+                      <span class="mdl-list__item-secondary-info">Likes</span>
+                      {% if file.titulo in like %}
+                        <a class="contenedor" href="/like/{{ file.id }}">{{ file.likes }}<i class="material-icons">check_circle</i></a>
+                      {% else %}
+                        <a class="contenedor" href="/like/{{ file.id }}">{{ file.likes }}<i class="material-icons">check</i></a>
+                      {% endif %}
+                    </span>
+                    <span class="mdl-list__item-secondary-content">
+                      <span class="mdl-list__item-secondary-info">Dislikes</span>
+                      {% if file.titulo in dislike %}
+                        <a class="contenedor" href="/dislike/{{ file.id }}">{{ file.dislikes }}<i class="material-icons">cancel</i></a>
+                      {% else %}
+                        <a class="contenedor" href="/dislike/{{ file.id }}">{{ file.dislikes }}<i class="material-icons">clear</i></a>
+                      {% endif %}
+                    </span>
+                    <span class="mdl-list__item-secondary-content">
+                      <span class="mdl-list__item-secondary-info">Fav</span>
+                      {% if file.titulo in fav %}
+                        <a class="contenedor" href="/favorito_eliminar/{{ file.id }}"><i class="material-icons">star</i></a>
+                      {% else %}
+                        <a class="contenedor" href="/favorito/{{ file.id }}"><i class="material-icons">star_border</i></a>
+                      {% endif %}
                     </span>
                   </li>
                 {% endif %}
@@ -131,6 +227,30 @@
                       <span><a href="/uploads/{{ file.archivo }}">{{ file.titulo }}</a></span>
                       <span class="mdl-list__item-text-body">{{ file.descripcion }}</span>
                     </span>
+                    <span class="mdl-list__item-secondary-content">
+                      <span class="mdl-list__item-secondary-info">Likes</span>
+                      {% if file.titulo in like %}
+                        <a class="contenedor" href="/like/{{ file.id }}">{{ file.likes }}<i class="material-icons">check_circle</i></a>
+                      {% else %}
+                        <a class="contenedor" href="/like/{{ file.id }}">{{ file.likes }}<i class="material-icons">check</i></a>
+                      {% endif %}
+                    </span>
+                    <span class="mdl-list__item-secondary-content">
+                      <span class="mdl-list__item-secondary-info">Dislikes</span>
+                      {% if file.titulo in dislike %}
+                        <a class="contenedor" href="/dislike/{{ file.id }}">{{ file.dislikes }}<i class="material-icons">cancel</i></a>
+                      {% else %}
+                        <a class="contenedor" href="/dislike/{{ file.id }}">{{ file.dislikes }}<i class="material-icons">clear</i></a>
+                      {% endif %}
+                    </span>
+                    <span class="mdl-list__item-secondary-content">
+                      <span class="mdl-list__item-secondary-info">Fav</span>
+                      {% if file.titulo in fav %}
+                        <a class="contenedor" href="/favorito_eliminar/{{ file.id }}"><i class="material-icons">star</i></a>
+                      {% else %}
+                        <a class="contenedor" href="/favorito/{{ file.id }}"><i class="material-icons">star_border</i></a>
+                      {% endif %}
+                    </span>
                   </li>
                 {% endif %}
               {% endif %}
@@ -155,6 +275,30 @@
                       <i class="material-icons mdl-list__item-icon">image</i>
                       <span><a href="/uploads/{{ file.archivo }}">{{ file.titulo }}</a></span>
                       <span class="mdl-list__item-text-body">{{ file.descripcion }}</span>
+                    </span>
+                    <span class="mdl-list__item-secondary-content">
+                      <span class="mdl-list__item-secondary-info">Likes</span>
+                      {% if file.titulo in like %}
+                        <a class="contenedor" href="/like/{{ file.id }}">{{ file.likes }}<i class="material-icons">check_circle</i></a>
+                      {% else %}
+                        <a class="contenedor" href="/like/{{ file.id }}">{{ file.likes }}<i class="material-icons">check</i></a>
+                      {% endif %}
+                    </span>
+                    <span class="mdl-list__item-secondary-content">
+                      <span class="mdl-list__item-secondary-info">Dislikes</span>
+                      {% if file.titulo in dislike %}
+                        <a class="contenedor" href="/dislike/{{ file.id }}">{{ file.dislikes }}<i class="material-icons">cancel</i></a>
+                      {% else %}
+                        <a class="contenedor" href="/dislike/{{ file.id }}">{{ file.dislikes }}<i class="material-icons">clear</i></a>
+                      {% endif %}
+                    </span>
+                    <span class="mdl-list__item-secondary-content">
+                      <span class="mdl-list__item-secondary-info">Fav</span>
+                      {% if file.titulo in fav %}
+                        <a class="contenedor" href="/favorito_eliminar/{{ file.id }}"><i class="material-icons">star</i></a>
+                      {% else %}
+                        <a class="contenedor" href="/favorito/{{ file.id }}"><i class="material-icons">star_border</i></a>
+                      {% endif %}
                     </span>
                   </li>
                 {% endif %}
