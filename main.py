@@ -35,7 +35,7 @@ csrf = CsrfProtect()
 
 @app.before_request
 def before_request():
-    if 'username' not in session and request.endpoint in ['upload', 'archivos', 'uploads', 'borrar_archivo', 'comentarios', 'bienvenida', 'temas', 'crear_tema', 'logout', 'favoritos', 'like', 'dislike', 'favorito', 'favorito_eliminar']:
+    if 'username' not in session and request.endpoint in ['upload', 'archivos', 'uploads', 'borrar_archivo', 'comentarios', 'bienvenida', 'temas', 'crear_tema', 'logout', 'favoritos', 'like', 'dislike', 'like_eliminar', 'dislike_eliminar', 'favorito', 'favorito_eliminar']:
         return redirect(url_for('login'))
     elif 'username' in session and request.endpoint in ['index', 'login', 'registro']:
         return redirect(url_for('bienvenida'))
@@ -219,13 +219,30 @@ def crear_tema():
 
 @app.route('/favoritos')
 def favoritos():
-    favoritos = Favorito.query.join(File).add_columns(Favorito.user_id, File.titulo, File.descripcion, File.archivo, File.materia_id)
+    favoritos = Favorito.query.join(File).add_columns(Favorito.user_id, Favorito.file_id, File.titulo, File.descripcion, File.archivo, File.likes, File.dislikes, File.materia_id)
     current_user = session['user_id']
+
+    likes = Like.query.join(File).add_columns(Like.user_id, File.titulo, Like.like)
+    like = []
+    dislike = []
+
+    for file in likes:
+        if file.user_id == current_user:
+            if file.like == 1:
+                like.append(file.titulo)
+            else:
+                dislike.append(file.titulo)
+
+    for file in favoritos:
+        if file.dislikes == 6:
+            return redirect(url_for('borrar_archivo', file_id = file.id))
+
     title = 'Favoritos'
-    return render_template('favoritos.html', title = title, favoritos = favoritos, current_user = current_user)
+    return render_template('favoritos.html', title = title, favoritos = favoritos, current_user = current_user, like = like, dislike = dislike)
 
 @app.route('/like/<int:file_id>')
-def like(file_id):
+@app.route('/like/<int:file_id>/<origin>')
+def like(file_id, origin = 'files'):
     likes = Like.query.all()
     archivo = File.query.filter_by(id = file_id).first()
 
@@ -238,14 +255,20 @@ def like(file_id):
                 like.dislike = 0
                 db.session.commit()
 
-                return redirect(url_for('archivos'))
+                if origin == 'fav':
+                    return redirect(url_for('favoritos'))
+                else:
+                    return redirect(url_for('archivos'))
 
         nuevo_like = Like(file_id, 1, 0, session['user_id'])
         archivo.likes = archivo.likes + 1
         db.session.add(nuevo_like)
         db.session.commit()
 
-        return redirect(url_for('archivos'))
+        if origin == 'fav':
+            return redirect(url_for('favoritos'))
+        else:
+            return redirect(url_for('archivos'))
 
     else:
         nuevo_like = Like(file_id, 1, 0, session['user_id'])
@@ -253,10 +276,14 @@ def like(file_id):
         db.session.add(nuevo_like)
         db.session.commit()
 
-    return redirect(url_for('archivos'))
+    if origin == 'fav':
+        return redirect(url_for('favoritos'))
+    else:
+        return redirect(url_for('archivos'))
 
 @app.route('/like_eliminar/<int:file_id>')
-def like_eliminar(file_id):
+@app.route('/like_eliminar/<int:file_id>/<origin>')
+def like_eliminar(file_id, origin = 'files'):
     likes = Like.query.all()
     archivo = File.query.filter_by(id = file_id).first()
 
@@ -269,10 +296,14 @@ def like_eliminar(file_id):
     archivo.likes = archivo.likes - 1
     db.session.commit()
 
-    return redirect(url_for('archivos'))
+    if origin == 'fav':
+        return redirect(url_for('favoritos'))
+    else:
+        return redirect(url_for('archivos'))
 
 @app.route('/dislike/<int:file_id>')
-def dislike(file_id):
+@app.route('/dislike/<int:file_id>/<origin>')
+def dislike(file_id, origin = 'files'):
     likes = Like.query.all()
     archivo = File.query.filter_by(id = file_id).first()
 
@@ -285,14 +316,20 @@ def dislike(file_id):
                 like.dislike = 1
                 db.session.commit()
 
-                return redirect(url_for('archivos'))
+                if origin == 'fav':
+                    return redirect(url_for('favoritos'))
+                else:
+                    return redirect(url_for('archivos'))
 
         nuevo_like = Like(file_id, 0, 1, session['user_id'])
         archivo.dislikes = archivo.dislikes + 1
         db.session.add(nuevo_like)
         db.session.commit()
 
-        return redirect(url_for('archivos'))
+        if origin == 'fav':
+            return redirect(url_for('favoritos'))
+        else:
+            return redirect(url_for('archivos'))
 
     else:
         nuevo_like = Like(file_id, 0, 1, session['user_id'])
@@ -300,10 +337,14 @@ def dislike(file_id):
         db.session.add(nuevo_like)
         db.session.commit()
 
-    return redirect(url_for('archivos'))
+    if origin == 'fav':
+        return redirect(url_for('favoritos'))
+    else:
+        return redirect(url_for('archivos'))
 
 @app.route('/dislike_eliminar/<int:file_id>')
-def dislike_eliminar(file_id):
+@app.route('/dislike_eliminar/<int:file_id>/<origin>')
+def dislike_eliminar(file_id, origin = 'files'):
     likes = Like.query.all()
     archivo = File.query.filter_by(id = file_id).first()
 
@@ -316,18 +357,25 @@ def dislike_eliminar(file_id):
     archivo.dislikes = archivo.dislikes - 1
     db.session.commit()
 
-    return redirect(url_for('archivos'))
+    if origin == 'fav':
+        return redirect(url_for('favoritos'))
+    else:
+        return redirect(url_for('archivos'))
 
 @app.route('/favorito/<int:file_id>')
-def favorito(file_id):
+def favorito(file_id, origin = 'files'):
     favorito = Favorito(session['user_id'], file_id)
     db.session.add(favorito)
     db.session.commit()
 
-    return redirect(url_for('archivos'))
+    if origin == 'fav':
+        return redirect(url_for('favoritos'))
+    else:
+        return redirect(url_for('archivos'))
 
 @app.route('/favorito_eliminar/<int:file_id>')
-def favorito_eliminar(file_id):
+@app.route('/favorito_eliminar/<int:file_id>/<origin>')
+def favorito_eliminar(file_id, origin = 'files'):
     favoritos = Favorito.query.all()
     current_user = session['user_id']
 
@@ -339,7 +387,10 @@ def favorito_eliminar(file_id):
     db.session.delete(fav)
     db.session.commit()
 
-    return redirect(url_for('archivos'))
+    if origin == 'fav':
+        return redirect(url_for('favoritos'))
+    else:
+        return redirect(url_for('archivos'))
 
 if __name__ == '__main__':
     csrf.init_app(app)

@@ -20,6 +20,10 @@
   color: #fff;
   font-size: 2em;
 }
+.active {
+  color: #D32F2F;
+  border-bottom: #D32F2F solid 4px;
+}
 
 /* ----- INDEX ----- */
 .center {
