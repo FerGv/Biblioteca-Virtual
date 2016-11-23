@@ -30,7 +30,7 @@
                     <span class="mdl-list__item-secondary-content">
                       <span class="mdl-list__item-secondary-info">Likes</span>
                       {% if file.titulo in like %}
-                        <a class="contenedor" href="/like/{{ file.id }}">{{ file.likes }}<i class="material-icons">check_circle</i></a>
+                        <a class="contenedor" href="/like_eliminar/{{ file.id }}">{{ file.likes }}<i class="material-icons">check_circle</i></a>
                       {% else %}
                         <a class="contenedor" href="/like/{{ file.id }}">{{ file.likes }}<i class="material-icons">check</i></a>
                       {% endif %}
@@ -38,18 +38,14 @@
                     <span class="mdl-list__item-secondary-content">
                       <span class="mdl-list__item-secondary-info">Dislikes</span>
                       {% if file.titulo in dislike %}
-                        <a class="contenedor" href="/dislike/{{ file.id }}">{{ file.dislikes }}<i class="material-icons">cancel</i></a>
+                        <a class="contenedor" href="/dislike_eliminar/{{ file.id }}">{{ file.dislikes }}<i class="material-icons">cancel</i></a>
                       {% else %}
                         <a class="contenedor" href="/dislike/{{ file.id }}">{{ file.dislikes }}<i class="material-icons">clear</i></a>
                       {% endif %}
                     </span>
                     <span class="mdl-list__item-secondary-content">
                       <span class="mdl-list__item-secondary-info">Fav</span>
-                      {% if file.titulo in fav %}
-                        <a class="contenedor" href="/favorito_eliminar/{{ file.id }}"><i class="material-icons">star</i></a>
-                      {% else %}
-                        <a class="contenedor" href="/favorito/{{ file.id }}"><i class="material-icons">star_border</i></a>
-                      {% endif %}
+                      <a class="contenedor" href="/favorito_eliminar/{{ file.id }}"><i class="material-icons">star</i></a>
                     </span>
                   </li>
                 {% endif %}

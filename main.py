@@ -232,23 +232,13 @@ def like(file_id):
     if likes:
         for like in likes:
             if like.user_id == session['user_id'] and like.file_id == file_id:
-                if like.like == 1 and like.dislike == 0:
-                    archivo.likes = archivo.likes - 1
-                    archivo.dislikes = archivo.dislikes + 1
-                    like.like = 0
-                    like.dislike = 1
-                    db.session.commit()
+                archivo.likes = archivo.likes + 1
+                archivo.dislikes = archivo.dislikes - 1
+                like.like = 1
+                like.dislike = 0
+                db.session.commit()
 
-                    return redirect(url_for('archivos'))
-
-                elif like.like == 0 and like.dislike == 1:
-                    archivo.likes = archivo.likes + 1
-                    archivo.dislikes = archivo.dislikes - 1
-                    like.like = 1
-                    like.dislike = 0
-                    db.session.commit()
-
-                    return redirect(url_for('archivos'))
+                return redirect(url_for('archivos'))
 
         nuevo_like = Like(file_id, 1, 0, session['user_id'])
         archivo.likes = archivo.likes + 1
@@ -265,6 +255,22 @@ def like(file_id):
 
     return redirect(url_for('archivos'))
 
+@app.route('/like_eliminar/<int:file_id>')
+def like_eliminar(file_id):
+    likes = Like.query.all()
+    archivo = File.query.filter_by(id = file_id).first()
+
+    for like in likes:
+        if like.user_id == session['user_id'] and like.file_id == file_id:
+            like_id = like.id
+
+    lik = Like.query.get(like_id)
+    db.session.delete(lik)
+    archivo.likes = archivo.likes - 1
+    db.session.commit()
+
+    return redirect(url_for('archivos'))
+
 @app.route('/dislike/<int:file_id>')
 def dislike(file_id):
     likes = Like.query.all()
@@ -273,23 +279,13 @@ def dislike(file_id):
     if likes:
         for like in likes:
             if like.user_id == session['user_id'] and like.file_id == file_id:
-                if like.like == 1 and like.dislike == 0:
-                    archivo.likes = archivo.likes - 1
-                    archivo.dislikes = archivo.dislikes + 1
-                    like.like = 0
-                    like.dislike = 1
-                    db.session.commit()
+                archivo.likes = archivo.likes - 1
+                archivo.dislikes = archivo.dislikes + 1
+                like.like = 0
+                like.dislike = 1
+                db.session.commit()
 
-                    return redirect(url_for('archivos'))
-
-                elif like.like == 0 and like.dislike == 1:
-                    archivo.likes = archivo.likes + 1
-                    archivo.dislikes = archivo.dislikes - 1
-                    like.like = 1
-                    like.dislike = 0
-                    db.session.commit()
-
-                    return redirect(url_for('archivos'))
+                return redirect(url_for('archivos'))
 
         nuevo_like = Like(file_id, 0, 1, session['user_id'])
         archivo.dislikes = archivo.dislikes + 1
@@ -303,6 +299,22 @@ def dislike(file_id):
         archivo.dislikes = archivo.dislikes + 1
         db.session.add(nuevo_like)
         db.session.commit()
+
+    return redirect(url_for('archivos'))
+
+@app.route('/dislike_eliminar/<int:file_id>')
+def dislike_eliminar(file_id):
+    likes = Like.query.all()
+    archivo = File.query.filter_by(id = file_id).first()
+
+    for like in likes:
+        if like.user_id == session['user_id'] and like.file_id == file_id:
+            like_id = like.id
+
+    lik = Like.query.get(like_id)
+    db.session.delete(lik)
+    archivo.dislikes = archivo.dislikes - 1
+    db.session.commit()
 
     return redirect(url_for('archivos'))
 
