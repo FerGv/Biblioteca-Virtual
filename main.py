@@ -137,7 +137,6 @@ def upload(materia_id):
 def uploads(filename):
     return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
 
-@app.route('/archivos')
 @app.route('/archivos/<int:materia_id>')
 def archivos(materia_id = 1):
     favoritos = Favorito.query.join(File).add_columns(Favorito.user_id, File.titulo)
@@ -224,7 +223,8 @@ def crear_tema():
     return render_template('crear_tema.html', form = theme_form, title = title)
 
 @app.route('/favoritos')
-def favoritos():
+@app.route('/favoritos/<int:materia_id>')
+def favoritos(materia_id = 1):
     favoritos = Favorito.query.join(File).add_columns(Favorito.user_id, Favorito.file_id, File.titulo, File.descripcion, File.archivo, File.likes, File.dislikes, File.materia_id)
     current_user = session['user_id']
 
@@ -243,15 +243,16 @@ def favoritos():
         if file.dislikes == 6:
             return redirect(url_for('borrar_archivo', file_id = file.id))
 
-    materias_fav = []
-    materias = Materia_Favorito.query.join(Materia).add_columns(Materia_Favorito.user_id, Materia.nombre)
+    materias_fav = {}
+    materias = Materia_Favorito.query.join(Materia).add_columns(Materia_Favorito.user_id, Materia_Favorito.materia_id, Materia.nombre)
 
     for materia in materias:
         if materia.user_id == current_user and materia.nombre not in materias_fav:
-            materias_fav.append(materia.nombre)
+            materias_fav[materia.materia_id] = materia.nombre
 
+    print materias_fav
     title = 'Favoritos'
-    return render_template('favoritos.html', title = title, favoritos = favoritos, current_user = current_user, like = like, dislike = dislike, materias_fav = materias_fav)
+    return render_template('favoritos.html', title = title, favoritos = favoritos, current_user = current_user, like = like, dislike = dislike, materias_fav = materias_fav, materia_id = materia_id)
 
 @app.route('/like/<int:materia_id>/<int:file_id>')
 @app.route('/like/<int:materia_id>/<int:file_id>/<origin>')

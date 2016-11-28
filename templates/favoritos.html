@@ -16,11 +16,11 @@
     <span class="mdl-layout-title">Asignaturas</span>
     <nav class="mdl-navigation">
       {% if materias_fav %}
-        {% for materia in materias_fav %}
-          <a href="/archivos/{{ materia.id }}" class="mdl-navigation__link drawer_link">{{ materia.nombre }}</a>
+        {% for id,nombre in materias_fav.items() %}
+          <a href="/favoritos/{{ id }}" class="mdl-navigation__link drawer_link">{{ nombre }}</a>
         {% endfor %}
       {% else %}
-        <a href="/archivos" class="mdl-navigation__link">No hay materias</a>
+        <a href="/favoritos" class="mdl-navigation__link">No hay materias</a>
       {% endif %}
     </nav>
   </div>
@@ -43,7 +43,7 @@
         <ul class="mdl-list">
           {% if favoritos %}
             {% for file in favoritos %}
-              {% if file.user_id == current_user %}
+              {% if file.user_id == current_user and file.materia_id == materia_id %}
                 {% if file.archivo.rsplit('.', 1)[1] in ['jpg', 'jpeg', 'gif', 'png'] %}
                   <li class="mdl-list__item mdl-list__item--three-line archivo">
                     <span class="mdl-list__item-primary-content">
@@ -69,7 +69,7 @@
                     </span>
                     <span class="mdl-list__item-secondary-content">
                       <span class="mdl-list__item-secondary-info">Fav</span>
-                      <a class="contenedor" href="/favorito_eliminar/{{ file.file_id }}/fav"><i class="material-icons">star</i></a>
+                      <a class="contenedor" href="/favorito_eliminar/{{ materia_id }}/{{ file.file_id }}/fav"><i class="material-icons">star</i></a>
                     </span>
                   </li>
                 {% endif %}
