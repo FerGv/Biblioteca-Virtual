@@ -25,6 +25,7 @@ from model import File
 from model import Materia
 from model import Favorito
 from model import Like
+from model import Materia_Favorito
 
 from helper import date_format
 
@@ -98,8 +99,8 @@ def logout():
 
     return redirect(url_for('index'))
 
-@app.route('/upload', methods = ['GET', 'POST'])
-def upload():
+@app.route('/upload/<int:materia_id>', methods = ['GET', 'POST'])
+def upload(materia_id):
     upload_file_form = forms.UploadFile_Form(request.form)
 
     if request.method == 'POST' and upload_file_form.validate():
@@ -117,7 +118,7 @@ def upload():
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
 
             archivo = File(session['user_id'],
-                            1,
+                            materia_id,
                             upload_file_form.titulo.data,
                             upload_file_form.descripcion.data,
                             filename,
@@ -127,7 +128,7 @@ def upload():
             db.session.add(archivo)
             db.session.commit()
 
-            return redirect(url_for('archivos'))
+            return redirect(url_for('archivos', materia_id = materia_id))
     else:
         title = 'Subir archivo'
         return render_template('upload.html', title = title, form = upload_file_form)
@@ -137,7 +138,8 @@ def uploads(filename):
     return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
 
 @app.route('/archivos')
-def archivos():
+@app.route('/archivos/<int:materia_id>')
+def archivos(materia_id = 1):
     favoritos = Favorito.query.join(File).add_columns(Favorito.user_id, File.titulo)
     likes = Like.query.join(File).add_columns(Like.user_id, File.titulo, Like.like)
     current_user = session['user_id']
@@ -161,8 +163,11 @@ def archivos():
         if file.dislikes == 6:
             return redirect(url_for('borrar_archivo', file_id = file.id))
 
+
+    materias = Materia.query.all()
+
     title = 'Biblioteca'
-    return render_template('archivos.html', archivos = archivos, title = title, fav = fav, like = like, dislike = dislike)
+    return render_template('archivos.html', archivos = archivos, title = title, fav = fav, like = like, dislike = dislike, materias = materias, materia_id = materia_id)
 
 @app.route('/borrar_archivo/<int:file_id>')
 def borrar_archivo(file_id):
@@ -194,12 +199,13 @@ def comentarios(id_tema = 1):
     return render_template('comentarios.html', title = title, comments = comments, form = comment_form, id_tema = id_tema, date_format = date_format, tema = tema.tema)
 
 @app.route('/temas')
-def temas():
+@app.route('/temas/<int:materia_id>')
+def temas(materia_id = 1):
     temas = Theme.query.all()
     title = 'Foro'
-    return render_template('temas.html', temas = temas, title = title)
+    return render_template('temas.html', temas = temas, title = title, materia_id = materia_id)
 
-@app.route('/crear_tema', methods = ['GET', 'POST'])
+@app.route('/crear_tema/<int:materia_id>', methods = ['GET', 'POST'])
 def crear_tema():
     theme_form = forms.Theme_Form(request.form)
 
@@ -237,12 +243,19 @@ def favoritos():
         if file.dislikes == 6:
             return redirect(url_for('borrar_archivo', file_id = file.id))
 
-    title = 'Favoritos'
-    return render_template('favoritos.html', title = title, favoritos = favoritos, current_user = current_user, like = like, dislike = dislike)
+    materias_fav = []
+    materias = Materia_Favorito.query.join(Materia).add_columns(Materia_Favorito.user_id, Materia.nombre)
 
-@app.route('/like/<int:file_id>')
-@app.route('/like/<int:file_id>/<origin>')
-def like(file_id, origin = 'files'):
+    for materia in materias:
+        if materia.user_id == current_user and materia.nombre not in materias_fav:
+            materias_fav.append(materia.nombre)
+
+    title = 'Favoritos'
+    return render_template('favoritos.html', title = title, favoritos = favoritos, current_user = current_user, like = like, dislike = dislike, materias_fav = materias_fav)
+
+@app.route('/like/<int:materia_id>/<int:file_id>')
+@app.route('/like/<int:materia_id>/<int:file_id>/<origin>')
+def like(materia_id, file_id, origin = 'files'):
     likes = Like.query.all()
     archivo = File.query.filter_by(id = file_id).first()
 
@@ -258,7 +271,7 @@ def like(file_id, origin = 'files'):
                 if origin == 'fav':
                     return redirect(url_for('favoritos'))
                 else:
-                    return redirect(url_for('archivos'))
+                    return redirect(url_for('archivos', materia_id = materia_id))
 
         nuevo_like = Like(file_id, 1, 0, session['user_id'])
         archivo.likes = archivo.likes + 1
@@ -268,7 +281,7 @@ def like(file_id, origin = 'files'):
         if origin == 'fav':
             return redirect(url_for('favoritos'))
         else:
-            return redirect(url_for('archivos'))
+            return redirect(url_for('archivos', materia_id = materia_id))
 
     else:
         nuevo_like = Like(file_id, 1, 0, session['user_id'])
@@ -279,11 +292,11 @@ def like(file_id, origin = 'files'):
     if origin == 'fav':
         return redirect(url_for('favoritos'))
     else:
-        return redirect(url_for('archivos'))
+        return redirect(url_for('archivos', materia_id = materia_id))
 
-@app.route('/like_eliminar/<int:file_id>')
-@app.route('/like_eliminar/<int:file_id>/<origin>')
-def like_eliminar(file_id, origin = 'files'):
+@app.route('/like_eliminar/<int:materia_id>/<int:file_id>')
+@app.route('/like_eliminar/<int:materia_id>/<int:file_id>/<origin>')
+def like_eliminar(materia_id, file_id, origin = 'files'):
     likes = Like.query.all()
     archivo = File.query.filter_by(id = file_id).first()
 
@@ -299,11 +312,11 @@ def like_eliminar(file_id, origin = 'files'):
     if origin == 'fav':
         return redirect(url_for('favoritos'))
     else:
-        return redirect(url_for('archivos'))
+        return redirect(url_for('archivos', materia_id = materia_id))
 
-@app.route('/dislike/<int:file_id>')
-@app.route('/dislike/<int:file_id>/<origin>')
-def dislike(file_id, origin = 'files'):
+@app.route('/dislike/<int:materia_id>/<int:file_id>')
+@app.route('/dislike/<int:materia_id>/<int:file_id>/<origin>')
+def dislike(materia_id, file_id, origin = 'files'):
     likes = Like.query.all()
     archivo = File.query.filter_by(id = file_id).first()
 
@@ -319,7 +332,7 @@ def dislike(file_id, origin = 'files'):
                 if origin == 'fav':
                     return redirect(url_for('favoritos'))
                 else:
-                    return redirect(url_for('archivos'))
+                    return redirect(url_for('archivos', materia_id = materia_id))
 
         nuevo_like = Like(file_id, 0, 1, session['user_id'])
         archivo.dislikes = archivo.dislikes + 1
@@ -329,7 +342,7 @@ def dislike(file_id, origin = 'files'):
         if origin == 'fav':
             return redirect(url_for('favoritos'))
         else:
-            return redirect(url_for('archivos'))
+            return redirect(url_for('archivos', materia_id = materia_id))
 
     else:
         nuevo_like = Like(file_id, 0, 1, session['user_id'])
@@ -340,11 +353,11 @@ def dislike(file_id, origin = 'files'):
     if origin == 'fav':
         return redirect(url_for('favoritos'))
     else:
-        return redirect(url_for('archivos'))
+        return redirect(url_for('archivos', materia_id = materia_id))
 
-@app.route('/dislike_eliminar/<int:file_id>')
-@app.route('/dislike_eliminar/<int:file_id>/<origin>')
-def dislike_eliminar(file_id, origin = 'files'):
+@app.route('/dislike_eliminar/<int:materia_id>/<int:file_id>')
+@app.route('/dislike_eliminar/<int:materia_id>/<int:file_id>/<origin>')
+def dislike_eliminar(materia_id, file_id, origin = 'files'):
     likes = Like.query.all()
     archivo = File.query.filter_by(id = file_id).first()
 
@@ -360,37 +373,43 @@ def dislike_eliminar(file_id, origin = 'files'):
     if origin == 'fav':
         return redirect(url_for('favoritos'))
     else:
-        return redirect(url_for('archivos'))
+        return redirect(url_for('archivos', materia_id = materia_id))
 
-@app.route('/favorito/<int:file_id>')
-def favorito(file_id, origin = 'files'):
+@app.route('/favorito/<int:materia_id>/<int:file_id>')
+def favorito(materia_id, file_id):
     favorito = Favorito(session['user_id'], file_id)
+    mat_fav = Materia_Favorito(session['user_id'], materia_id, file_id)
     db.session.add(favorito)
+    db.session.add(mat_fav)
     db.session.commit()
 
-    if origin == 'fav':
-        return redirect(url_for('favoritos'))
-    else:
-        return redirect(url_for('archivos'))
+    return redirect(url_for('archivos', materia_id = materia_id))
 
-@app.route('/favorito_eliminar/<int:file_id>')
-@app.route('/favorito_eliminar/<int:file_id>/<origin>')
-def favorito_eliminar(file_id, origin = 'files'):
+@app.route('/favorito_eliminar/<int:materia_id>/<int:file_id>')
+@app.route('/favorito_eliminar/<int:materia_id>/<int:file_id>/<origin>')
+def favorito_eliminar(materia_id, file_id, origin = 'files'):
     favoritos = Favorito.query.all()
+    mat_favs = Materia_Favorito.query.all()
     current_user = session['user_id']
 
     for file in favoritos:
         if file.user_id == current_user and file.file_id == file_id:
             fav_id = file.id
 
+    for materia in mat_favs:
+        if materia.user_id == current_user and materia.materia_id == materia_id and materia.file_id == file_id:
+            mf_id = materia.id
+
     fav = Favorito.query.get(fav_id)
+    mat_fav = Materia_Favorito.query.get(mf_id)
     db.session.delete(fav)
+    db.session.delete(mat_fav)
     db.session.commit()
 
     if origin == 'fav':
         return redirect(url_for('favoritos'))
     else:
-        return redirect(url_for('archivos'))
+        return redirect(url_for('archivos', materia_id = materia_id))
 
 if __name__ == '__main__':
     csrf.init_app(app)

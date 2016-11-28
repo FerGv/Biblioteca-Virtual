@@ -15,8 +15,8 @@
 {% block contenido %}
   <h1 class="titulo">Temas</h1>
 
-  <a href="/crear_tema"><button class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored nuevo" title="Nuevo"><i class="material-icons">add</i></button></a>
-  <a href="/crear_tema" class="nuevo_link">Nuevo</a>
+  <a href="/crear_tema/{{ materia_id }}"><button class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored nuevo" title="Nuevo"><i class="material-icons">add</i></button></a>
+  <a href="/crear_tema/{{ materia_id }}" class="nuevo_link">Nuevo</a>
 
   {% if temas %}
     <ul class="mdl-list">

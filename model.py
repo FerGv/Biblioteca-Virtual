@@ -55,6 +55,7 @@ class Materia(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     nombre = db.Column(db.String(60), unique=True)
+    mat_fav = db.relationship('Materia_Favorito')
 
     def __init__(self, nombre):
         self.nombre = nombre
@@ -107,3 +108,16 @@ class Like(db.Model):
         self.like = like
         self.dislike = dislike
         self.user_id = user_id
+
+class Materia_Favorito(db.Model):
+    __tablename__ = 'materias_fav'
+
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer)
+    materia_id = db.Column(db.Integer, db.ForeignKey('materias.id'))
+    file_id = db.Column(db.Integer)
+
+    def __init__(self, user_id, materia_id, file_id):
+        self.user_id = user_id
+        self.materia_id = materia_id
+        self.file_id = file_id

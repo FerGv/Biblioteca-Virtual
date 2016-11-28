@@ -11,6 +11,21 @@
 
 {% block favoritos %}active{% endblock %}
 
+{% block drawer %}
+  <div class="mdl-layout__drawer">
+    <span class="mdl-layout-title">Asignaturas</span>
+    <nav class="mdl-navigation">
+      {% if materias_fav %}
+        {% for materia in materias_fav %}
+          <a href="/archivos/{{ materia.id }}" class="mdl-navigation__link drawer_link">{{ materia.nombre }}</a>
+        {% endfor %}
+      {% else %}
+        <a href="/archivos" class="mdl-navigation__link">No hay materias</a>
+      {% endif %}
+    </nav>
+  </div>
+{% endblock %}
+
 {% block contenido %}
   <br><br>
 
