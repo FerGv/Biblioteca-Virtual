@@ -180,7 +180,11 @@
 .ancho {
   width: 80%;
 }
-
+.drawer_input {
+  display: none;
+  width: 95%;
+  margin-left: 5px;
+}
 
 /* ----- COMENTARIOS ----- */
 .boton_file:hover {

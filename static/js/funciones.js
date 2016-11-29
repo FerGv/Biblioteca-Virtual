@@ -6,3 +6,7 @@ function Confirmar_Password() {
     document.getElementById('oculto').style.display = "block";
   }
 }
+
+function Mostrar_Input() {
+  document.getElementById('input_materia').style.display = 'block';
+}

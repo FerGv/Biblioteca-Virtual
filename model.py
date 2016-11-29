@@ -47,8 +47,9 @@ class Theme(db.Model):
     tema = db.Column(db.Text)
     materia_id = db.Column(db.Integer)
 
-    def __init__(self, tema):
+    def __init__(self, tema, materia_id):
         self.tema = tema
+        self.materia_id = materia_id
 
 class Materia(db.Model):
     __tablename__ = 'materias'

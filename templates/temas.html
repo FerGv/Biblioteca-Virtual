@@ -12,8 +12,33 @@
 
 {% block foro %}active{% endblock %}
 
+{% block drawer %}
+  <div class="mdl-layout__drawer">
+    <span class="mdl-layout-title drawer_title">
+      Asignaturas
+    </span>
+    <nav class="mdl-navigation">
+      {% if materias %}
+        {% for materia in materias %}
+          <a href="/temas/{{ materia.id }}" class="mdl-navigation__link drawer_link">{{ materia.nombre }}</a>
+        {% endfor %}
+      {% else %}
+        <a href="/temas" class="mdl-navigation__link">No hay materias</a>
+      {% endif %}
+    </nav>
+  </div>
+{% endblock %}
+
 {% block contenido %}
-  <h1 class="titulo">Temas</h1>
+  <h1 class="titulo">
+    {% if materias %}
+      {% for materia in materias %}
+        {% if materia.id == materia_id %}
+          {{ materia.nombre }}
+        {% endif %}
+      {% endfor %}
+    {% endif %}
+  </h1>
 
   <a href="/crear_tema/{{ materia_id }}"><button class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored nuevo" title="Nuevo"><i class="material-icons">add</i></button></a>
   <a href="/crear_tema/{{ materia_id }}" class="nuevo_link">Nuevo</a>
@@ -21,12 +46,14 @@
   {% if temas %}
     <ul class="mdl-list">
       {% for tema in temas %}
-        <li class="mdl-list__item archivo">
-          <span class="mdl-list__item-primary-content">
-            <i class="material-icons mdl-list__item-icon">mode_comment</i>
-            <a href="/comentarios/{{ tema.id }}">{{ tema.tema }}</a>
-          </span>
-        </li>
+        {% if tema.materia_id == materia_id %}
+          <li class="mdl-list__item archivo">
+            <span class="mdl-list__item-primary-content">
+              <i class="material-icons mdl-list__item-icon">mode_comment</i>
+              <a href="/comentarios/{{ tema.id }}">{{ tema.tema }}</a>
+            </span>
+          </li>
+        {% endif %}
       {% endfor %}
     </ul>
   {% else %}

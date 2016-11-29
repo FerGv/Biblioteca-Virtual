@@ -21,15 +21,6 @@
     </div>
     <br>
     <input type="submit" name="Enviar" value="Enviar Comentario" class="mdl-button mdl-button--raised mdl-button--colored">
-    {% with messages = get_flashed_messages() %}
-      {% if messages %}
-        {% for message in messages %}
-        <div class="alert">
-          {{ message }}
-        </div>
-        {% endfor %}
-      {% endif %}
-    {% endwith %}
     <br><br>
   </form>
   <br>

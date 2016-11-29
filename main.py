@@ -3,6 +3,7 @@
 
 import os
 import forms
+import operator
 
 from flask import Flask
 from flask import render_template
@@ -137,7 +138,7 @@ def upload(materia_id):
 def uploads(filename):
     return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
 
-@app.route('/archivos/<int:materia_id>')
+@app.route('/archivos/<int:materia_id>', methods=['GET', 'POST'])
 def archivos(materia_id = 1):
     favoritos = Favorito.query.join(File).add_columns(Favorito.user_id, File.titulo)
     likes = Like.query.join(File).add_columns(Like.user_id, File.titulo, Like.like)
@@ -160,23 +161,41 @@ def archivos(materia_id = 1):
     archivos = File.query.all()
     for file in archivos:
         if file.dislikes == 6:
-            return redirect(url_for('borrar_archivo', file_id = file.id))
-
+            return redirect(url_for('borrar_archivo', file_id = file.id, materia_id = materia_id, origin = 'files'))
 
     materias = Materia.query.all()
 
-    title = 'Biblioteca'
-    return render_template('archivos.html', archivos = archivos, title = title, fav = fav, like = like, dislike = dislike, materias = materias, materia_id = materia_id)
+    materia_form = forms.Materia_Form(request.form)
+    if request.method == 'POST' and materia_form.validate():
+        nueva_materia = Materia(materia_form.materia.data)
+        db.session.add(nueva_materia)
+        db.session.commit()
 
-@app.route('/borrar_archivo/<int:file_id>')
-def borrar_archivo(file_id):
+        return redirect(url_for('archivos', materia_id = nueva_materia.id))
+
+    title = 'Biblioteca'
+    return render_template('archivos.html', archivos = archivos, title = title, fav = fav, like = like, dislike = dislike, materias = materias, materia_id = materia_id, form = materia_form, current_user = current_user)
+
+@app.route('/borrar_archivo/<int:file_id>/<int:materia_id>/<origin>')
+def borrar_archivo(file_id, materia_id, origin):
     mypath = '/home/fer_gv/GitHub/Biblioteca-Virtual/Archivos/'
     archivo = File.query.get(file_id)
     os.remove(os.path.join(mypath, archivo.archivo))
+    favoritos = Favorito.query.all()
+
+    for file in favoritos:
+        if file.file_id == file_id:
+            fav = Favorito.query.get(file.id)
+            db.session.delete(fav)
+            db.session.commit()
+
     db.session.delete(archivo)
     db.session.commit()
 
-    return redirect(url_for('archivos'))
+    if origin == 'fav':
+        return redirect(url_for('favoritos'))
+    else:
+        return redirect(url_for('archivos', materia_id = materia_id))
 
 @app.route('/comentarios/<int:id_tema>', methods = ['GET', 'POST'])
 def comentarios(id_tema = 1):
@@ -197,27 +216,26 @@ def comentarios(id_tema = 1):
     title = 'Comentarios'
     return render_template('comentarios.html', title = title, comments = comments, form = comment_form, id_tema = id_tema, date_format = date_format, tema = tema.tema)
 
-@app.route('/temas')
 @app.route('/temas/<int:materia_id>')
 def temas(materia_id = 1):
     temas = Theme.query.all()
+    materias = Materia.query.all()
     title = 'Foro'
-    return render_template('temas.html', temas = temas, title = title, materia_id = materia_id)
+    return render_template('temas.html', temas = temas, title = title, materia_id = materia_id, materias = materias)
 
 @app.route('/crear_tema/<int:materia_id>', methods = ['GET', 'POST'])
-def crear_tema():
+def crear_tema(materia_id):
     theme_form = forms.Theme_Form(request.form)
 
     if request.method == 'POST' and theme_form.validate():
         tema = theme_form.theme.data
 
-        theme = Theme(tema)
+        theme = Theme(tema, materia_id)
 
         db.session.add(theme)
         db.session.commit()
 
-        flash('Tema creado')
-        return redirect(url_for('temas'))
+        return redirect(url_for('temas', materia_id = materia_id))
 
     title = 'Crear Tema'
     return render_template('crear_tema.html', form = theme_form, title = title)
@@ -241,7 +259,7 @@ def favoritos(materia_id = 1):
 
     for file in favoritos:
         if file.dislikes == 6:
-            return redirect(url_for('borrar_archivo', file_id = file.id))
+            return redirect(url_for('borrar_archivo', file_id = file.id, materia_id = materia_id, origin = 'fav'))
 
     materias_fav = {}
     materias = Materia_Favorito.query.join(Materia).add_columns(Materia_Favorito.user_id, Materia_Favorito.materia_id, Materia.nombre)
@@ -250,9 +268,11 @@ def favoritos(materia_id = 1):
         if materia.user_id == current_user and materia.nombre not in materias_fav:
             materias_fav[materia.materia_id] = materia.nombre
 
-    print materias_fav
+    resultado = sorted(materias_fav.items(), key=operator.itemgetter(1))
+    limite = len(resultado)
+    print resultado
     title = 'Favoritos'
-    return render_template('favoritos.html', title = title, favoritos = favoritos, current_user = current_user, like = like, dislike = dislike, materias_fav = materias_fav, materia_id = materia_id)
+    return render_template('favoritos.html', title = title, favoritos = favoritos, current_user = current_user, like = like, dislike = dislike, materias_fav = resultado, materia_id = materia_id, limite = limite)
 
 @app.route('/like/<int:materia_id>/<int:file_id>')
 @app.route('/like/<int:materia_id>/<int:file_id>/<origin>')

@@ -7,13 +7,37 @@
     margin-right: 20px;
     text-align: center;
   }
+.rojo {
+  color: red;
+}
 {% endblock %}
 
 {% block biblioteca %}active{% endblock %}
 
 {% block drawer %}
   <div class="mdl-layout__drawer">
-    <span class="mdl-layout-title">Asignaturas</span>
+    <span class="mdl-layout-title drawer_title">
+      Asignaturas
+      {% if current_user == 1 %}
+        <button class="mdl-button mdl-js-button mdl-button--mini-fab mdl-js-ripple-effect mdl-button--colored" title="Nueva Materia" onclick="Mostrar_Input()"><i class="material-icons">add</i></button>
+      {% endif %}
+    </span>
+    {% if current_user == 1 %}
+      <form method="post">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label drawer_input" id="input_materia">
+          {{form.materia(class_='mdl-textfield__input')|safe}}
+          <label class="mdl-textfield__label" for="materia">Ingresa una materia...</label>
+          {% if form.materia.errors %}
+          <ul class="rojo">
+            {% for error in form.materia.errors %}
+            <li> {{ error }} </li>
+            {% endfor %}
+          </ul>
+          {% endif  %}
+        </div>
+      </form>
+    {% endif %}
     <nav class="mdl-navigation">
       {% if materias %}
         {% for materia in materias %}
@@ -34,7 +58,7 @@
 
   <div class="mdl-tabs mdl-js-tabs mdl-js-ripple-effect">
       <div class="mdl-tabs__tab-bar">
-          <a href="#img" class="mdl-tabs__tab is-active tab">Imágenes</a>
+          <a href="#img" class="mdl-tabs__tab is-active tab">IMÁGENES</a>
           <a href="#pdf" class="mdl-tabs__tab tab">PDF</a>
           <a href="#word" class="mdl-tabs__tab tab">WORD</a>
           <a href="#ppt" class="mdl-tabs__tab tab">POWERPOINT</a>
@@ -95,7 +119,8 @@
       <div class="mdl-tabs__panel" id="pdf">
         <ul class="mdl-list">
           {% if archivos %}
-              {% for file in archivos %}
+            {% for file in archivos %}
+              {% if file.materia_id == materia_id %}
                 {% if file.archivo.rsplit('.', 1)[1] == 'pdf' %}
                   <li class="mdl-list__item mdl-list__item--three-line archivo">
                     <span class="mdl-list__item-primary-content">
@@ -106,30 +131,31 @@
                     <span class="mdl-list__item-secondary-content">
                       <span class="mdl-list__item-secondary-info">Likes</span>
                       {% if file.titulo in like %}
-                        <a class="contenedor" href="/like_eliminar/{{ file.id }}">{{ file.likes }}<i class="material-icons">check_circle</i></a>
+                        <a class="contenedor" href="/like_eliminar/{{ materia_id }}/{{ file.id }}">{{ file.likes }}<i class="material-icons">check_circle</i></a>
                       {% else %}
-                        <a class="contenedor" href="/like/{{ file.id }}">{{ file.likes }}<i class="material-icons">check</i></a>
+                        <a class="contenedor" href="/like/{{ materia_id }}/{{ file.id }}">{{ file.likes }}<i class="material-icons">check</i></a>
                       {% endif %}
                     </span>
                     <span class="mdl-list__item-secondary-content">
                       <span class="mdl-list__item-secondary-info">Dislikes</span>
                       {% if file.titulo in dislike %}
-                        <a class="contenedor" href="/dislike_eliminar/{{ file.id }}">{{ file.dislikes }}<i class="material-icons">cancel</i></a>
+                        <a class="contenedor" href="/dislike_eliminar/{{ materia_id }}/{{ file.id }}">{{ file.dislikes }}<i class="material-icons">cancel</i></a>
                       {% else %}
-                        <a class="contenedor" href="/dislike/{{ file.id }}">{{ file.dislikes }}<i class="material-icons">clear</i></a>
+                        <a class="contenedor" href="/dislike/{{ materia_id }}/{{ file.id }}">{{ file.dislikes }}<i class="material-icons">clear</i></a>
                       {% endif %}
                     </span>
                     <span class="mdl-list__item-secondary-content">
                       <span class="mdl-list__item-secondary-info">Fav</span>
                       {% if file.titulo in fav %}
-                        <a class="contenedor" href="/favorito_eliminar/{{ file.id }}"><i class="material-icons">star</i></a>
+                        <a class="contenedor" href="/favorito_eliminar/{{ materia_id }}/{{ file.id }}"><i class="material-icons">star</i></a>
                       {% else %}
-                        <a class="contenedor" href="/favorito/{{ file.id }}"><i class="material-icons">star_border</i></a>
+                        <a class="contenedor" href="/favorito/{{ materia_id }}/{{ file.id }}"><i class="material-icons">star_border</i></a>
                       {% endif %}
                     </span>
                   </li>
                 {% endif %}
-              {% endfor %}
+              {% endif %}
+            {% endfor %}
           {% else %}
             <li class="mdl-list__item archivo">
               <span class="mdl-list__item-primary-content">
@@ -143,7 +169,8 @@
       <div class="mdl-tabs__panel" id="word">
         <ul class="mdl-list">
           {% if archivos %}
-              {% for file in archivos %}
+            {% for file in archivos %}
+              {% if file.materia_id == materia_id %}
                 {% if file.archivo.rsplit('.', 1)[1] in ['docx', 'doc'] %}
                   <li class="mdl-list__item mdl-list__item--three-line archivo">
                     <span class="mdl-list__item-primary-content">
@@ -154,30 +181,31 @@
                     <span class="mdl-list__item-secondary-content">
                       <span class="mdl-list__item-secondary-info">Likes</span>
                       {% if file.titulo in like %}
-                        <a class="contenedor" href="/like_eliminar_eliminar/{{ file.id }}">{{ file.likes }}<i class="material-icons">check_circle</i></a>
+                        <a class="contenedor" href="/like_eliminar/{{ materia_id }}/{{ file.id }}">{{ file.likes }}<i class="material-icons">check_circle</i></a>
                       {% else %}
-                        <a class="contenedor" href="/like/{{ file.id }}">{{ file.likes }}<i class="material-icons">check</i></a>
+                        <a class="contenedor" href="/like/{{ materia_id }}/{{ file.id }}">{{ file.likes }}<i class="material-icons">check</i></a>
                       {% endif %}
                     </span>
                     <span class="mdl-list__item-secondary-content">
                       <span class="mdl-list__item-secondary-info">Dislikes</span>
                       {% if file.titulo in dislike %}
-                        <a class="contenedor" href="/dislike_eliminar_eliminar/{{ file.id }}">{{ file.dislikes }}<i class="material-icons">cancel</i></a>
+                        <a class="contenedor" href="/dislike_eliminar/{{ materia_id }}/{{ file.id }}">{{ file.dislikes }}<i class="material-icons">cancel</i></a>
                       {% else %}
-                        <a class="contenedor" href="/dislike/{{ file.id }}">{{ file.dislikes }}<i class="material-icons">clear</i></a>
+                        <a class="contenedor" href="/dislike/{{ materia_id }}/{{ file.id }}">{{ file.dislikes }}<i class="material-icons">clear</i></a>
                       {% endif %}
                     </span>
                     <span class="mdl-list__item-secondary-content">
                       <span class="mdl-list__item-secondary-info">Fav</span>
                       {% if file.titulo in fav %}
-                        <a class="contenedor" href="/favorito_eliminar/{{ file.id }}"><i class="material-icons">star</i></a>
+                        <a class="contenedor" href="/favorito_eliminar/{{ materia_id }}/{{ file.id }}"><i class="material-icons">star</i></a>
                       {% else %}
-                        <a class="contenedor" href="/favorito/{{ file.id }}"><i class="material-icons">star_border</i></a>
+                        <a class="contenedor" href="/favorito/{{ materia_id }}/{{ file.id }}"><i class="material-icons">star_border</i></a>
                       {% endif %}
                     </span>
                   </li>
                 {% endif %}
-              {% endfor %}
+              {% endif %}
+            {% endfor %}
           {% else %}
             <li class="mdl-list__item archivo">
               <span class="mdl-list__item-primary-content">
@@ -191,7 +219,8 @@
       <div class="mdl-tabs__panel" id="ppt">
         <ul class="mdl-list">
           {% if archivos %}
-              {% for file in archivos %}
+            {% for file in archivos %}
+              {% if file.materia_id == materia_id %}
                 {% if file.archivo.rsplit('.', 1)[1] in ['pptx', 'ppt'] %}
                   <li class="mdl-list__item mdl-list__item--three-line archivo">
                     <span class="mdl-list__item-primary-content">
@@ -202,30 +231,31 @@
                     <span class="mdl-list__item-secondary-content">
                       <span class="mdl-list__item-secondary-info">Likes</span>
                       {% if file.titulo in like %}
-                        <a class="contenedor" href="/like_eliminar/{{ file.id }}">{{ file.likes }}<i class="material-icons">check_circle</i></a>
+                        <a class="contenedor" href="/like_eliminar/{{ materia_id }}/{{ file.id }}">{{ file.likes }}<i class="material-icons">check_circle</i></a>
                       {% else %}
-                        <a class="contenedor" href="/like/{{ file.id }}">{{ file.likes }}<i class="material-icons">check</i></a>
+                        <a class="contenedor" href="/like/{{ materia_id }}/{{ file.id }}">{{ file.likes }}<i class="material-icons">check</i></a>
                       {% endif %}
                     </span>
                     <span class="mdl-list__item-secondary-content">
                       <span class="mdl-list__item-secondary-info">Dislikes</span>
                       {% if file.titulo in dislike %}
-                        <a class="contenedor" href="/dislike_eliminar/{{ file.id }}">{{ file.dislikes }}<i class="material-icons">cancel</i></a>
+                        <a class="contenedor" href="/dislike_eliminar/{{ materia_id }}/{{ file.id }}">{{ file.dislikes }}<i class="material-icons">cancel</i></a>
                       {% else %}
-                        <a class="contenedor" href="/dislike/{{ file.id }}">{{ file.dislikes }}<i class="material-icons">clear</i></a>
+                        <a class="contenedor" href="/dislike/{{ materia_id }}/{{ file.id }}">{{ file.dislikes }}<i class="material-icons">clear</i></a>
                       {% endif %}
                     </span>
                     <span class="mdl-list__item-secondary-content">
                       <span class="mdl-list__item-secondary-info">Fav</span>
                       {% if file.titulo in fav %}
-                        <a class="contenedor" href="/favorito_eliminar/{{ file.id }}"><i class="material-icons">star</i></a>
+                        <a class="contenedor" href="/favorito_eliminar/{{ materia_id }}/{{ file.id }}"><i class="material-icons">star</i></a>
                       {% else %}
-                        <a class="contenedor" href="/favorito/{{ file.id }}"><i class="material-icons">star_border</i></a>
+                        <a class="contenedor" href="/favorito/{{ materia_id }}/{{ file.id }}"><i class="material-icons">star_border</i></a>
                       {% endif %}
                     </span>
                   </li>
                 {% endif %}
-              {% endfor %}
+              {% endif %}
+            {% endfor %}
           {% else %}
             <li class="mdl-list__item archivo">
               <span class="mdl-list__item-primary-content">
@@ -239,7 +269,8 @@
       <div class="mdl-tabs__panel" id="txt">
         <ul class="mdl-list">
           {% if archivos %}
-              {% for file in archivos %}
+            {% for file in archivos %}
+              {% if file.materia_id == materia_id %}
                 {% if file.archivo.rsplit('.', 1)[1] == 'txt' %}
                   <li class="mdl-list__item mdl-list__item--three-line archivo">
                     <span class="mdl-list__item-primary-content">
@@ -250,30 +281,31 @@
                     <span class="mdl-list__item-secondary-content">
                       <span class="mdl-list__item-secondary-info">Likes</span>
                       {% if file.titulo in like %}
-                        <a class="contenedor" href="/like_eliminar/{{ file.id }}">{{ file.likes }}<i class="material-icons">check_circle</i></a>
+                        <a class="contenedor" href="/like_eliminar/{{ materia_id }}/{{ file.id }}">{{ file.likes }}<i class="material-icons">check_circle</i></a>
                       {% else %}
-                        <a class="contenedor" href="/like/{{ file.id }}">{{ file.likes }}<i class="material-icons">check</i></a>
+                        <a class="contenedor" href="/like/{{ materia_id }}/{{ file.id }}">{{ file.likes }}<i class="material-icons">check</i></a>
                       {% endif %}
                     </span>
                     <span class="mdl-list__item-secondary-content">
                       <span class="mdl-list__item-secondary-info">Dislikes</span>
                       {% if file.titulo in dislike %}
-                        <a class="contenedor" href="/dislike_eliminar/{{ file.id }}">{{ file.dislikes }}<i class="material-icons">cancel</i></a>
+                        <a class="contenedor" href="/dislike_eliminar/{{ materia_id }}/{{ file.id }}">{{ file.dislikes }}<i class="material-icons">cancel</i></a>
                       {% else %}
-                        <a class="contenedor" href="/dislike/{{ file.id }}">{{ file.dislikes }}<i class="material-icons">clear</i></a>
+                        <a class="contenedor" href="/dislike/{{ materia_id }}/{{ file.id }}">{{ file.dislikes }}<i class="material-icons">clear</i></a>
                       {% endif %}
                     </span>
                     <span class="mdl-list__item-secondary-content">
                       <span class="mdl-list__item-secondary-info">Fav</span>
                       {% if file.titulo in fav %}
-                        <a class="contenedor" href="/favorito_eliminar/{{ file.id }}"><i class="material-icons">star</i></a>
+                        <a class="contenedor" href="/favorito_eliminar/{{ materia_id }}/{{ file.id }}"><i class="material-icons">star</i></a>
                       {% else %}
-                        <a class="contenedor" href="/favorito/{{ file.id }}"><i class="material-icons">star_border</i></a>
+                        <a class="contenedor" href="/favorito/{{ materia_id }}/{{ file.id }}"><i class="material-icons">star_border</i></a>
                       {% endif %}
                     </span>
                   </li>
                 {% endif %}
-              {% endfor %}
+              {% endif %}
+            {% endfor %}
           {% else %}
             <li class="mdl-list__item archivo">
               <span class="mdl-list__item-primary-content">
@@ -286,7 +318,8 @@
       </div><div class="mdl-tabs__panel" id="otros">
         <ul class="mdl-list">
           {% if archivos %}
-              {% for file in archivos %}
+            {% for file in archivos %}
+              {% if file.materia_id == materia_id %}
                 {% if file.archivo.rsplit('.', 1)[1] not in ['jpg', 'jpeg', 'gif', 'png', 'pdf', 'docx', 'doc', 'pptx', 'ppt', 'txt'] %}
                   <li class="mdl-list__item mdl-list__item--three-line archivo">
                     <span class="mdl-list__item-primary-content">
@@ -297,30 +330,31 @@
                     <span class="mdl-list__item-secondary-content">
                       <span class="mdl-list__item-secondary-info">Likes</span>
                       {% if file.titulo in like %}
-                        <a class="contenedor" href="/like_eliminar/{{ file.id }}">{{ file.likes }}<i class="material-icons">check_circle</i></a>
+                        <a class="contenedor" href="/like_eliminar/{{ materia_id }}/{{ file.id }}">{{ file.likes }}<i class="material-icons">check_circle</i></a>
                       {% else %}
-                        <a class="contenedor" href="/like/{{ file.id }}">{{ file.likes }}<i class="material-icons">check</i></a>
+                        <a class="contenedor" href="/like/{{ materia_id }}/{{ file.id }}">{{ file.likes }}<i class="material-icons">check</i></a>
                       {% endif %}
                     </span>
                     <span class="mdl-list__item-secondary-content">
                       <span class="mdl-list__item-secondary-info">Dislikes</span>
                       {% if file.titulo in dislike %}
-                        <a class="contenedor" href="/dislike_eliminar/{{ file.id }}">{{ file.dislikes }}<i class="material-icons">cancel</i></a>
+                        <a class="contenedor" href="/dislike_eliminar/{{ materia_id }}/{{ file.id }}">{{ file.dislikes }}<i class="material-icons">cancel</i></a>
                       {% else %}
-                        <a class="contenedor" href="/dislike/{{ file.id }}">{{ file.dislikes }}<i class="material-icons">clear</i></a>
+                        <a class="contenedor" href="/dislike/{{ materia_id }}/{{ file.id }}">{{ file.dislikes }}<i class="material-icons">clear</i></a>
                       {% endif %}
                     </span>
                     <span class="mdl-list__item-secondary-content">
                       <span class="mdl-list__item-secondary-info">Fav</span>
                       {% if file.titulo in fav %}
-                        <a class="contenedor" href="/favorito_eliminar/{{ file.id }}"><i class="material-icons">star</i></a>
+                        <a class="contenedor" href="/favorito_eliminar/{{ materia_id }}/{{ file.id }}"><i class="material-icons">star</i></a>
                       {% else %}
-                        <a class="contenedor" href="/favorito/{{ file.id }}"><i class="material-icons">star_border</i></a>
+                        <a class="contenedor" href="/favorito/{{ materia_id }}/{{ file.id }}"><i class="material-icons">star_border</i></a>
                       {% endif %}
                     </span>
                   </li>
                 {% endif %}
-              {% endfor %}
+              {% endif %}
+            {% endfor %}
           {% else %}
             <li class="mdl-list__item archivo">
               <span class="mdl-list__item-primary-content">

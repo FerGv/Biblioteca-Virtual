@@ -30,6 +30,9 @@ class Comment_Form(Form):
 class Theme_Form(Form):
     theme = TextAreaField('Tema', [validators.Required(message='Este campo es obligatorio')])
 
+class Materia_Form(Form):
+    materia = StringField('Materia', [validators.Required(message='Este campo es obligatorio')])
+
 class UploadFile_Form(Form):
     titulo = StringField('Titulo', [validators.Required(message='Este campo es obligatorio.'), validators.length(min=4, max=25, message='4 - 25 caracteres.')])
     descripcion = TextAreaField('Descripcion', [validators.Required(message='Este campo es obligatorio')])
