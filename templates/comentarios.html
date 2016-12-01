@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block css %}
+  .titulo {
+    text-align: center;
+    background: none;
+    color: #fff;
+  }
+{% endblock %}
+
+{% block foro %}active{% endblock %}
+
+{% block contenido %}
+  <h1 class="titulo">{{ tema }}</h1><br>
+
+  {% if comments %}
+    {% for comment in comments %}
+      {% if comment.theme_id == id_tema %}
+      <div class="mdl-card mdl-shadow--16dp">
+        <div class="mdl-card__supporting-text">
+          <h1>{{ comment.text }}</h1>
+        </div>
+        <div class="mdl-card__supporting-text">
+          <h3><i class="material-icons">person</i> {{ comment.username }}</h3>
+          <h6>{{ date_format(comment.created_date) }}</h6>
+        </div>
+      </div>
+      <br>
+      {% endif %}
+    {% endfor %}
+  {% else %}
+      <div class="mdl-card mdl-shadow--16dp">
+        <div class="mdl-card__supporting-text">
+          <h1>No hay comentarios.</h1>
+        </div>
+      </div>
+      <br>
+  {% endif %}
+
+  <br><br><br>
+  <form action="" method="post" class="form_comment">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label ancho">
+      {{form.comment(class_='mdl-textfield__input', rows = '10', cols = '100')|safe}}
+      <label class="mdl-textfield__label blanco" for="comment">Ingresa un comentario...</label>
+    </div>
+    <br>
+    <input type="submit" name="Enviar" value="Enviar Comentario" class="mdl-button mdl-button--raised mdl-button--colored">
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        {% for message in messages %}
+        <div class="alert">
+          {{ message }}
+        </div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+    <br><br>
+  </form>
+  <br><br><br>
+{% endblock %}

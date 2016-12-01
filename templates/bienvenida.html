@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block css %}
+body {
+  text-align:center;
+}
+p {
+  text-align: justify;
+}
+{% endblock %}
+
+{% block contenido %}
+<h1 class="titulo">Bienvenido</h1>
+
+<section class="mensaje">
+  <p>
+    Bienvenido, en esta plataforma encontrarás material académico como libros, exámenes y mucho más, que esperamos te sirvan de ayuda para que logres tener un buen rendimiento escolar.
+  </p>
+  <br>
+  <img src="{{ url_for('static', filename = 'img/logo.png') }}" alt="Logo">
+</section>
+{% endblock %}

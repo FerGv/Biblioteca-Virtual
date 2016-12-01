@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename = 'fonts/fonts.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static', filename = 'icons/iconfont/material-icons.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static', filename = 'css/material.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static', filename = 'css/estilos.css') }}" />
+    <style>
+    .demo-layout-transparent {
+      background: url('{{ url_for('static', filename = 'img/biblioteca.jpg') }}') center / cover;
+    }
+    {% block css %}{% endblock %}
+    </style>
+  </head>
+  <body>
+    <div class="demo-layout-transparent mdl-layout mdl-js-layout">
+      <main class="mdl-layout__content">
+        {% block contenido %}
+        {% endblock %}
+      </main>
+    </div>
+
+    <script src="{{ url_for('static', filename = 'js/material.js') }}"></script>
+    <script src="{{ url_for('static', filename = 'js/funciones.js') }}"></script>
+  </body>
+</html>

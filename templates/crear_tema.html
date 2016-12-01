@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block css %}
+  .titulo {
+    text-align: center;
+  }
+{% endblock %}
+
+{% block contenido %}
+  <h1 class="titulo">Crear Tema</h1>
+
+  <br>
+
+  <form action="" method="post" class="form_comment">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label ancho">
+      {{form.theme(class_='mdl-textfield__input', rows = '10', cols = '100')|safe}}
+      <label class="mdl-textfield__label blanco" for="comment">Ingresa un tema...</label>
+    </div>
+    <br>
+    <input type="submit" name="Enviar" value="Enviar Comentario" class="mdl-button mdl-button--raised mdl-button--colored">
+    <br><br>
+  </form>
+  <br>
+{% endblock %}

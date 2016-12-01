@@ -1,0 +1,22 @@
+{% extends 'base2.html' %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block contenido %}
+<section class="center">
+  <h1 class="titulo">Biblioteca Virtual</h1>
+
+  <br><br><br>
+
+  <div class="options">
+    <div class="option">
+      <div class="icono"><i class="material-icons icon">vpn_key</i></div>
+      <div class="texto"><a href="/login"><p>Iniciar Sesión</p></a></div>
+    </div>
+    <div class="option">
+      <div class="icono"><i class="material-icons icon">assignment</i></div>
+      <div class="texto"><a href="/registro"><p>Registro</p></a></div>
+    </div>
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,56 @@
+{% extends 'base2.html' %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block css %}ul {color: #c62727}{% endblock %}
+
+{% block contenido %}
+  <section class="center">
+    <h1 class="titulo">Iniciar Sesión</h1>
+
+    <br><br>
+
+    <form method="post" class="mdl-layout__content form">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+      <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+        {{form.user(class_='mdl-textfield__input')|safe}}
+        {{form.user.label(class_='mdl-textfield__label')}}
+      </div>
+      {% if form.user.errors %}
+      <ul>
+        {% for error in form.user.errors %}
+        <li> {{ error }} </li>
+        {% endfor %}
+      </ul>
+      {% endif  %}
+
+      <br>
+
+      <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+        {{form.pwd(class_='mdl-textfield__input')|safe}}
+        <label class="mdl-textfield__label" for="pwd">Contraseña</label>
+      </div>
+      {% if form.pwd.errors %}
+      <ul>
+        {% for error in form.pwd.errors %}
+        <li> {{ error }} </li>
+        {% endfor %}
+      </ul>
+      {% endif  %}
+      <br>
+
+      <input type="submit" name="Entrar" value="Entrar" class="mdl-button mdl-button--raised mdl-button--colored">
+
+      {% with messages = get_flashed_messages() %}
+        {% if messages %}
+          {% for message in messages %}
+          <div class="alert">
+            <p>Usuario o contraseña no válidos.</p>
+          </div>
+          {% endfor %}
+        {% endif %}
+      {% endwith %}
+    </form>
+  </section>
+{% endblock %}
