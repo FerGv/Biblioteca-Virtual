@@ -8,9 +8,11 @@ Requisitos:
 - SQLAlchemy
 - MySQLdb
 
-Ejecución:
-1. Correr el script "main.py".
-2. Abrir el navegador en "localhost:5000".
+
+Ejecución: 
+- Correr el script "main.py".
+- Abrir el navegador en "localhost:5000".
+
 
 Notas:
--> Solo el administrador puede agregar o eliminar materias.
+- Solo el administrador puede agregar o eliminar materias.
