@@ -47,10 +47,30 @@ def index():
     title = 'Index'
     return render_template('index.html', title = title)
 
-@app.route('/cuenta')
+@app.route('/cuenta', methods = ['GET', 'POST'])
 def cuenta():
+    user_form = forms.User_Form(request.form)
+    user_form.user.data = session['username']
+    user = User.query.filter_by(username = session['username']).first()
+
+    if request.method == 'POST':
+        username = user_form.user.data
+        current_password = user_form.pwd3.data
+        new_password = user_form.pwd.data
+
+        if username == session['username'] and user.verify_password(current_password):
+            user.password = new_password
+            db.session.commit()
+            return redirect(url_for('cuenta'))
+        elif user_form.validate() and user.verify_password(current_password):
+            user.username = username
+            user.password = new_password
+            session['username'] = username
+            db.session.commit()
+            return redirect(url_for('cuenta'))
+
     title = 'Cuenta'
-    return render_template('cuenta.html', title = title)
+    return render_template('cuenta.html', title = title, form = user_form)
 
 @app.route('/bienvenida')
 def bienvenida():
