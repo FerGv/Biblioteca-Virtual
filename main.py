@@ -13,7 +13,7 @@ from flask import url_for
 from flask import flash
 from flask import session
 from flask import send_from_directory
-from flask_wtf import CsrfProtect
+from flask_wtf import CSRFProtect
 
 from werkzeug import secure_filename
 from config import DevelopmentConfig
@@ -33,7 +33,7 @@ from helper import date_format
 app = Flask(__name__)
 app.config.from_object(DevelopmentConfig)
 app.config['UPLOAD_FOLDER'] = 'Archivos/'
-csrf = CsrfProtect()
+csrf = CSRFProtect()
 
 @app.before_request
 def before_request():
@@ -46,6 +46,11 @@ def before_request():
 def index():
     title = 'Index'
     return render_template('index.html', title = title)
+
+@app.route('/cuenta')
+def cuenta():
+    title = 'Cuenta'
+    return render_template('cuenta.html', title = title)
 
 @app.route('/bienvenida')
 def bienvenida():
@@ -178,7 +183,7 @@ def archivos(materia_id = 1):
 
 @app.route('/borrar_archivo/<int:file_id>/<int:materia_id>/<origin>')
 def borrar_archivo(file_id, materia_id, origin):
-    mypath = '/home/fer_gv/GitHub/Biblioteca-Virtual/Archivos/'
+    mypath = '/home/fer-gv/GitHub/Biblioteca/Biblioteca-Virtual/Archivos/'
     archivo = File.query.get(file_id)
     os.remove(os.path.join(mypath, archivo.archivo))
     favoritos = Favorito.query.all()
