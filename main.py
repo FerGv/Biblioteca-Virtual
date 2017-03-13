@@ -57,16 +57,26 @@ def cuenta():
         username = user_form.user.data
         current_password = user_form.pwd3.data
         new_password = user_form.pwd.data
+        print username
 
-        if username == session['username'] and user.verify_password(current_password):
-            user.password = new_password
+        if username == session['username'] and new_password != "" and user.verify_password(current_password):
+            print "Entre al if"
+            print username
+            user.password = user.create_password(new_password)
             db.session.commit()
             return redirect(url_for('cuenta'))
         elif user_form.validate() and user.verify_password(current_password):
-            user.username = username
-            user.password = new_password
-            session['username'] = username
-            db.session.commit()
+            print "Entre al elif"
+            print username
+            new_user = User.query.filter_by(username = username).first()
+            if new_user is None:
+                user.username = username
+                session['username'] = username
+                if new_password != "":
+                    user.password = user.create_password(new_password)
+                db.session.commit()
+            else:
+                flash('Usuario ya existente')
             return redirect(url_for('cuenta'))
 
     title = 'Cuenta'

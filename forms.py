@@ -15,15 +15,8 @@ class Login_Form(Form):
 
 class User_Form(Form):
     user = StringField('Usuario', [validators.Required(message='Este campo es obligatorio.'), validators.length(min=4, max=25, message='4 - 25 caracteres.')])
-    pwd = PasswordField('New_Password', [validators.Required(message='Este campo es obligatorio')])
+    pwd = PasswordField('New_Password')
     pwd3 = PasswordField('Current_Password', [validators.Required(message='Este campo es obligatorio')])
-
-    def validate_user(form, field):
-        user = field.data
-        usuario = User.query.filter_by(username = user).first()
-
-        if usuario is not None:
-            raise validators.ValidationError('Usuario ya existente')
 
 class Create_Form(Form):
     user = StringField('Usuario', [validators.Required(message='Este campo es obligatorio.'), validators.length(min=4, max=25, message='4 - 25 caracteres.')])

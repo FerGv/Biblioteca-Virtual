@@ -18,9 +18,9 @@ class User(db.Model):
 
     def __init__(self, username, password):
         self.username = username
-        self.password = self.__create_password(password)
+        self.password = self.create_password(password)
 
-    def __create_password(self, password):
+    def create_password(self, password):
         return generate_password_hash(password)
 
     def verify_password(self, password):
