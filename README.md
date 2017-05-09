@@ -4,9 +4,10 @@ Para el diseño se utilizó el framework MDL (Material Design Lite).
 
 Requisitos:
 - Python 2.x
-- WTForms
-- SQLAlchemy
-- MySQLdb
+- Flask
+- WTForms: pip install Flask-WTF
+- SQLAlchemy: pip install Flask-SQLAlchemy
+- MySQLdb: pip install MySQL-python
 
 
 Ejecución: 
